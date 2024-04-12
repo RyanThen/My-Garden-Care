@@ -1,13 +1,35 @@
 <?php get_header(); ?>
 
-<main class="container">
-  <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-    <div class="col-lg-6 px-0">
-      <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
-      <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
-      <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>
+<main class="container mt-4">
+  <?php 
+  // Query for Featured Posts
+  $featuredPosts = new WP_Query(array(
+    'post_type' => 'post',
+    'posts_per_page' => -1,
+    'meta_query'     => array(
+      array(
+        'key'     => 'featured_blog_post',
+        'compare' => 'LIKE',
+        'value'   => 'Yes',
+        'type'    => 'text',
+      )
+    ),
+    'orderby' => 'meta_value post_date',
+  ));
+  
+  while($featuredPosts->have_posts()) {
+    $featuredPosts->the_post(); ?>
+
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+      <div class="col-lg-6 px-0">
+        <h1 class="display-4 fst-italic"><?php the_title(); ?></h1>
+        <p class="lead my-3"><?php echo wp_trim_words(get_the_content(), 30); ?></p>
+        <p class="lead mb-0"><a href="<?php echo get_the_permalink(); ?>" class="text-body-emphasis fw-bold">Continue reading...</a></p>
+      </div>
     </div>
-  </div>
+
+  <?php 
+  } ?>
 
   <div class="row mb-2">
     <div class="col-md-6">
