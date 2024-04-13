@@ -17,9 +17,26 @@ function mgc_theme_files() {
 
 }
 
+
 add_action('after_setup_theme', 'mgc_theme_features');  
 
 function mgc_theme_features() {
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
+}
+
+
+add_action('pre_get_posts', 'chewy_query_adjustments');
+
+function chewy_query_adjustments($query) {
+  if (!is_admin() && is_home() && $query->is_main_query()) {
+    $query->set('posts_per_page', 4);
+    $query->set('meta_query', array(
+      array(
+        'key'     => 'featured_blog_post',
+        'compare' => 'NOT LIKE',
+        'value'   => 'Yes',
+      )
+    ));
+  }
 }
