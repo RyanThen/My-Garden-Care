@@ -76,7 +76,7 @@
             <h3 class="mb-0"><?php the_title(); ?></h3>
             <div class="mb-1 text-body-secondary">Nov 12</div>
             <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
+            <a href="<?php echo get_the_permalink(); ?>" class="icon-link gap-1 icon-link-hover stretched-link">
               Continue reading
               <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
             </a>
@@ -114,7 +114,7 @@
             'posts_per_page' => 3,
             // 'cat' => 2,
             'category_name' => 'garden'
-            // I HAVE TO MAKE CATEGORY MORE FLEXIBLE
+            // MAKE CATEGORY MORE FLEXIBLE
           )); ?>
 
           <h4 class="fst-italic"><?php //var_dump($catQuery); ?>Garden Posts</h4>
@@ -142,18 +142,24 @@
         <div class="p-4">
           <h4 class="fst-italic">Archives</h4>
           <ol class="list-unstyled mb-0">
-            <li><a href="#">March 2021</a></li>
-            <li><a href="#">February 2021</a></li>
-            <li><a href="#">January 2021</a></li>
-            <li><a href="#">December 2020</a></li>
-            <li><a href="#">November 2020</a></li>
-            <li><a href="#">October 2020</a></li>
-            <li><a href="#">September 2020</a></li>
-            <li><a href="#">August 2020</a></li>
-            <li><a href="#">July 2020</a></li>
-            <li><a href="#">June 2020</a></li>
-            <li><a href="#">May 2020</a></li>
-            <li><a href="#">April 2020</a></li>
+            <?php // list archive links
+              echo wp_get_archives(array(
+                'type'            => 'monthly',
+                'limit'           => '',
+                'format'          => 'html',
+                'before'          => '',
+                'after'           => '',
+                'show_post_count' => false,
+                'echo'            => 1,
+                'order'           => 'DESC',
+                'post_type'       => 'post',
+                'year'            => get_query_var( 'year' ),
+                'monthnum'        => get_query_var( 'monthnum' ),
+                'day'             => get_query_var( 'day' ),
+                'w'               => get_query_var( 'w' ),
+              ));
+            ?>
+            <!-- <li><a href="#">January 2024</a></li> -->
           </ol>
         </div>
 

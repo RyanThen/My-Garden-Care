@@ -30,7 +30,7 @@ add_action('pre_get_posts', 'chewy_query_adjustments');
 
 function chewy_query_adjustments($query) {
   if (!is_admin() && is_home() && $query->is_main_query()) {
-    $query->set('posts_per_page', 4);
+    $query->set('posts_per_page', 5);
     $query->set('meta_query', array(
       array(
         'key'     => 'featured_blog_post',

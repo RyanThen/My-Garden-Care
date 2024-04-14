@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <!-- Hero -->
-<div class="px-4 pt-5 my-5 text-center border-bottom">
+<div class="px-4 pt-5 mt-3 text-center border-bottom">
   <h1 class="display-4 fw-bold text-body-emphasis">My Garden Care</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
@@ -29,7 +29,7 @@
       <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">List group item heading</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
@@ -39,7 +39,7 @@
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Another title here</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph that goes a little longer so it wraps to a new line.</p>
@@ -49,7 +49,7 @@
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Third heading</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
@@ -71,7 +71,7 @@
       <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">List group item heading</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
@@ -81,7 +81,7 @@
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Another title here</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph that goes a little longer so it wraps to a new line.</p>
@@ -91,7 +91,7 @@
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between">
+          <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Third heading</h6>
               <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
