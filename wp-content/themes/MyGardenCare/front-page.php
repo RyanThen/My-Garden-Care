@@ -19,49 +19,21 @@
 
 <!-- Events and Blog Lists -->
 <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block">
     <div class="my-3 p-3">
       <h2 class="display-5">Events near you</h2>
       <p class="lead">Lorem ipsum dolor sit amet.</p>
     </div>
     <div class="mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
   
-      <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between text-start">
-            <div>
-              <h6 class="mb-0">List group item heading</h6>
-              <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-            </div>
-            <small class="opacity-50 text-nowrap">now</small>
-          </div>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between text-start">
-            <div>
-              <h6 class="mb-0">Another title here</h6>
-              <p class="mb-0 opacity-75">Some placeholder content in a paragraph that goes a little longer so it wraps to a new line.</p>
-            </div>
-            <small class="opacity-50 text-nowrap">3d</small>
-          </div>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-          <div class="d-flex gap-2 w-100 justify-content-between text-start">
-            <div>
-              <h6 class="mb-0">Third heading</h6>
-              <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-            </div>
-            <small class="opacity-50 text-nowrap">1w</small>
-          </div>
-        </a>
+      <div class="event-block-container list-group">
+        <!-- event data -->
       </div>
 
     </div>
   </div>
-  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+
+  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block">
     <div class="my-3 py-3">
       <h2 class="display-5">From our blog</h2>
       <p class="lead">Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -70,7 +42,7 @@
 
       <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+          <i class="fa fa-leaf list-leaf" aria-hidden="true"></i>
           <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">List group item heading</h6>
@@ -80,7 +52,7 @@
           </div>
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+          <i class="fa fa-leaf list-leaf" aria-hidden="true"></i>
           <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Another title here</h6>
@@ -90,7 +62,7 @@
           </div>
         </a>
         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+          <i class="fa fa-leaf list-leaf" aria-hidden="true"></i>
           <div class="d-flex gap-2 w-100 justify-content-between text-start">
             <div>
               <h6 class="mb-0">Third heading</h6>
