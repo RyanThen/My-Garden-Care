@@ -6,3 +6,11 @@ i.list-leaf {
   margin-top: 1px;
   font-size: 19px;
 }
+
+.carousel {
+  margin-inline: auto;
+}
+
+.carousel, .carousel img {
+  max-width: 760px;
+}
