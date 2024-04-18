@@ -1,1 +1,1 @@
-archive page
+archive page template

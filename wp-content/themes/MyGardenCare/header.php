@@ -30,8 +30,23 @@
           </form>
 
           <div class="text-end">
-            <button type="button" class="btn btn-outline-light me-2">Login</button>
-            <button type="button" class="btn btn-warning">Sign-up</button>
+
+            <?php // conditional logic for login and log out nav buttons
+            if (is_user_logged_in()) { ?>
+              <a href="<?php echo wp_logout_url(); ?>">
+                <button type="button" class="btn btn-outline-light me-2">Logout</button>
+              </a>
+            <?php } else { ?>
+              <?php // send users to wp login screen ?>
+              <a href="<?php echo wp_login_url(); ?>">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+              </a>
+              <?php // send users to sign up / registration page for new user sign up ?>
+              <a href="<?php echo wp_registration_url(); ?>">
+                <button type="button" class="btn btn-warning">Sign-up</button>
+              </a>
+            <?php } ?>
+            
           </div>
         </div>
       </div>
