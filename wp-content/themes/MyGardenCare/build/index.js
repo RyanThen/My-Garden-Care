@@ -4154,9 +4154,9 @@ class Events {
             <div class="d-flex gap-2 w-100 justify-content-between text-start">
               <div>
                 <h6 class="mb-0">${event.name}</h6>
-                <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
+                <p class="mb-0 opacity-75">${event.pleaseNote.substring(0, 35)}...</p>
               </div>
-              <small class="opacity-50 text-nowrap">now</small>
+              <small class="opacity-50 text-nowrap">${event.dates.start.localDate}</small>
             </div>
           </a>  
         `;

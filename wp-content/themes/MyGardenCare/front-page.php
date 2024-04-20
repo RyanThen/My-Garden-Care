@@ -42,6 +42,8 @@
 
       <div class="list-group">
         <?php 
+          $today = date('Ymd');
+
           $blogList = new WP_Query(array(
             'posts_per_page' => 3
           ));
@@ -54,9 +56,9 @@
               <div class="d-flex gap-2 w-100 justify-content-between text-start">
                 <div>
                   <h6 class="mb-0"><?php the_title(); ?></h6>
-                  <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
+                  <p class="mb-0 opacity-75"><?php echo wp_trim_words(get_the_content(), 6); ?></p>
                 </div>
-                <small class="opacity-50 text-nowrap">now</small>
+                <small class="opacity-50 text-nowrap"><?php echo the_time('M Y'); ?></small>
               </div>
             </a>
 

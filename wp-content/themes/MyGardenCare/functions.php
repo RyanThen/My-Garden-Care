@@ -41,3 +41,17 @@ function chewy_query_adjustments($query) {
     ));
   }
 }
+
+
+// redirect subscriber accounts away from admin and onto frontend
+add_action('admin_init', 'redirect_subs_to_frontend');
+
+function redirect_subs_to_frontend() {
+  $current_user = wp_get_current_user();
+
+  // $current_user->roles will return an array
+  if(count($current_user->roles) == 1 && $current_user->roles[0] == 'subscriber') {
+    wp_redirect(site_url('/'));
+    exit;
+  }
+}
