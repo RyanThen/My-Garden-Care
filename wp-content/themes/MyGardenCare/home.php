@@ -72,10 +72,19 @@
           <?php } ?>
 
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
+            <strong class="d-inline-block mb-2 text-primary-emphasis">
+              <?php 
+              $primary_term_name = yoast_get_primary_term( 'category', get_the_ID() );
+
+              if ( $primary_term_name ) {
+                echo $primary_term_name;
+              } elseif ( !$primary_term_name ) {
+                echo get_the_category()[0]->cat_name;
+              } ?>
+            </strong>
             <h3 class="mb-0"><?php the_title(); ?></h3>
-            <div class="mb-1 text-body-secondary">Nov 12</div>
-            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+            <div class="mb-1 text-body-secondary"><?php the_date(); ?></div>
+            <p class="card-text mb-auto"><?php echo wp_trim_words(get_the_content(), 24); ?></p>
             <a href="<?php echo get_the_permalink(); ?>" class="icon-link gap-1 icon-link-hover stretched-link">
               Continue reading
               <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
@@ -129,7 +138,7 @@
                   <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
                   <div class="col-lg-8">
                     <h6 class="mb-0"><?php the_title(); ?></h6>
-                    <small class="text-body-secondary">January 15, 2024</small>
+                    <small class="text-body-secondary"><?php the_date(); ?></small>
                   </div>
                 </a>
               </li>

@@ -18,7 +18,7 @@
 
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li <?php if(is_front_page()) echo 'class="current-menu-item"' ?>><a href="<?php echo esc_url(site_url('/')); ?>" class="nav-link px-2 text-black">Home</a></li>
-            <li><a href="#" class="nav-link px-2 text-black">My Garden</a></li>
+            <li><a href="<?php echo esc_url(site_url('/my-garden')); ?>" class="nav-link px-2 text-black">My Garden</a></li>
             <li><a href="#" class="nav-link px-2 text-black">Pricing</a></li>
             <li><a href="#" class="nav-link px-2 text-black">FAQs</a></li>
             <li><a href="#" class="nav-link px-2 text-black">About</a></li>
