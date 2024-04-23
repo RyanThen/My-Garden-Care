@@ -14,3 +14,8 @@ i.list-leaf {
 .carousel, .carousel img {
   max-width: 760px;
 }
+
+.garden-list {
+  width: 380px;
+  margin-left: auto;
+}
