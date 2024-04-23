@@ -34,30 +34,8 @@ while(have_posts()) {
         
         <div class="container ps-0 pe-5 py-5" id="icon-grid">
           <h2 class="pb-2 border-bottom">Plant Search Results</h2>
-          <div class="plant-list row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4 py-5">
-
-            <div class="col d-flex align-items-start">
-              <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#bootstrap"></use></svg>
-              <div>
-                <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Plant Name</h3>
-                <p>Paragraph of text beneath the heading to explain the heading.</p>
-              </div>
-            </div>
-            <div class="col d-flex align-items-start">
-              <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#bootstrap"></use></svg>
-              <div>
-                <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Plant Name</h3>
-                <p>Paragraph of text beneath the heading to explain the heading.</p>
-              </div>
-            </div>
-            <div class="col d-flex align-items-start">
-              <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#bootstrap"></use></svg>
-              <div>
-                <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Plant Name</h3>
-                <p>Paragraph of text beneath the heading to explain the heading.</p>
-              </div>
-            </div>
-            
+          <div id="plant-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4 py-5">
+            <!-- Plant List Data -->
           </div>
         </div>
 

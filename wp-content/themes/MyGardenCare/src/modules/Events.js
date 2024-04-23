@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiKey } from './api.js';
+import { apiKeyTicketmaster } from './api.js';
 
 class Events {
   
@@ -9,14 +9,14 @@ class Events {
   }
 
   events() {
-    this.getEventResults();
+    if(this.eventBlock) this.getEventResults();
   }
 
   async getEventResults() {
     try {
 
       // find event by subgenre
-      const res = await axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?subGenreId=KZazBEonSMnZfZ7vAvF&apikey=${apiKey}`);
+      const res = await axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?subGenreId=KZazBEonSMnZfZ7vAvF&apikey=${apiKeyTicketmaster}`);
       const event = res.data._embedded.events;
      
       console.log(res);
