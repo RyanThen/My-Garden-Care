@@ -11,7 +11,7 @@ while(have_posts()) {
   the_post(); ?>
 
 <!-- Jumbotron -->
-  <div class="container py-4">
+  <div id="my-garden-wrap" class="container py-4">
 
     <div class="p-5 mb-5 bg-body-tertiary rounded-3">
       <div class="container-fluid py-5">
@@ -34,7 +34,7 @@ while(have_posts()) {
         
         <div class="container ps-0 pe-5 py-5" id="icon-grid">
           <h2 class="pb-2 border-bottom">Plant Search Results</h2>
-          <div id="plant-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4 py-5">
+          <div id="plant-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4 py-5">
             <!-- Plant List Data -->
           </div>
         </div>
@@ -58,10 +58,10 @@ while(have_posts()) {
         while($myGarden->have_posts()) {
           $myGarden->the_post(); ?>
 
-          <a href="#" class="list-group-item list-group-item-action py-3 lh-sm <?php if($myGarden->post == $myGarden->posts[0]) echo 'active'; ?>" aria-current="true">
+          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm <?php if($myGarden->post == $myGarden->posts[0]) echo 'active'; ?>" aria-current="true">
             <div class="d-flex w-100 align-items-center justify-content-between">
               <strong class="mb-1"><?php the_title(); ?></strong>
-              <small>Wed</small>
+              <small><?php the_time('D'); ?></small>
             </div>
             <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
           </a>
@@ -79,11 +79,7 @@ while(have_posts()) {
         </div>
       </div> <!-- .garden-list -->
 
-
-
     </div> <!-- .page-inner-container -->
-
-    <div style="padding-block: 150px;"><p>Spacer</p></div>
 
   </div>
 

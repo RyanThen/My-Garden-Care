@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<h3>INDEX.PHP FILE</h3>
+
 <main class="container">
   <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
     <div class="col-lg-6 px-0">
