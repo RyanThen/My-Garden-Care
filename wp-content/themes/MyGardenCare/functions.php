@@ -10,7 +10,6 @@ function mgc_theme_files() {
   wp_enqueue_style('mgc_styles', get_theme_file_uri('/css/style-main.css'));
   wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 
-  // Adds a script to bottom of html code (near the footer) with a variable you can reference in your JS. It puts the script directly above the file you name in the first parameter
   wp_localize_script('mgcJS', 'mgcThemeData', array(
     'root_url' => site_url(),
     'nonce' => wp_create_nonce('wp_rest'),
