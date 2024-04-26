@@ -66,13 +66,6 @@ while(have_posts()) {
             <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
           </a>
 
-          <!-- <li data-id="<?php echo get_the_ID(); ?>">
-            <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. Whenever using user generated info from database as html attribute wrap it in esc_attr() ?>">
-            <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-            <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-            <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content())); // wp_strip_all_tags() removes html tags and comments which are stored in the database along with content ?></textarea>
-            <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
-          </li> -->
         <?php
         } ?>
 

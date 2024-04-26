@@ -1,4 +1,13 @@
 <?php
+// Register custom REST API fields
+add_action('rest_api_init', 'mgc_rest_api');
+
+function mgc_rest_api() {
+  register_rest_field('my-garden', 'care_note', array(
+    'get_callback' => function() { return 'this is just a test'; } // <--php here
+  ));
+} 
+
 
 add_action('wp_enqueue_scripts', 'mgc_theme_files');
 
@@ -29,6 +38,7 @@ function mgc_theme_features() {
 add_action('pre_get_posts', 'chewy_query_adjustments');
 
 function chewy_query_adjustments($query) {
+  // filter out featured blog post so it doesn't display twice
   if (!is_admin() && is_home() && $query->is_main_query()) {
     $query->set('posts_per_page', 5);
     $query->set('meta_query', array(

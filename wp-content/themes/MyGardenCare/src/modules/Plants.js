@@ -37,7 +37,14 @@ class Plants {
     });
 
     // add plant
-    //*ADD EVENT HERE*//
+    this.addPlantBtns.forEach( item => {
+      item.addEventListener('click', e => {
+        // const currentPlantListItem = e.target.closest('.plant-list-item');
+        // const currentPlantID = currentPlantListItem.dataset.id;
+
+        this.addPlant(e);
+      });
+    });
 
     // plant details
     this.plantDetailBtns.forEach( item => {
@@ -45,7 +52,7 @@ class Plants {
         const currentPlantListItem = e.target.closest('.plant-list-item');
         const currentPlantID = currentPlantListItem.dataset.id;
 
-        this.getPlantDetails(currentPlantID);
+        this.getPlantDetails(currentPlantID, true);
       });
     });
 
@@ -86,19 +93,28 @@ class Plants {
     }
   }
 
-  async addPlant() {
-
-    const newPlant = {
-      "title": "Test Title....",
-      "content": "Test Content....",
-      "status": "publish"
-    }
+  async addPlant(e) {
 
     try {
+      const currentPlantListItem = e.target.closest('.plant-list-item');
+      const currentPlantID = currentPlantListItem.dataset.id;
+
+      const plantData = await this.getPlantDetails(currentPlantID);
+
+      const newPlant = {
+        "title": plantData.common_name,
+        "content": plantData.description,
+        // "care_note": plantData.care_note,
+        "status": "publish"
+      }
+
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/`, newPlant);
 
       if (res.data) {
         console.log('Success, New Plant Added - addPlant()', res);
+        
+        // take care of updating the front end here
+
       } else {        
         console.log('Failure, New Plant NOT Added - addPlant()', res);
       }
@@ -109,20 +125,23 @@ class Plants {
 
   }
 
-  async getPlantDetails(id) {
+  async getPlantDetails(id, buildModal = false) {
     try {
       const res = await axios.get(`https://perenual.com/api/species/details/${id}?key=${apiKeyPerenual}`);
       const plantData = res.data;
+
+      if(buildModal) {
+        this.modalTitle.innerHTML = plantData.common_name;
+        this.modalDescription.innerHTML = plantData.description;
+        this.modalOrigin.innerHTML = plantData.origin;
+        this.modalCycle.innerHTML = plantData.cycle;
+        this.modalCareGuide.innerHTML = plantData.care_level;
+        this.modal.classList.toggle('fade');
+      }
+
       console.log(plantData);
 
-      //** Create buildModal() function and put below code in it so getPlantDetails() can be used in more situations. Don't forget to the return the data for getPlantDetails() **//
-      
-      this.modalTitle.innerHTML = plantData.common_name;
-      this.modalDescription.innerHTML = plantData.description;
-      this.modalOrigin.innerHTML = plantData.origin;
-      this.modalCycle.innerHTML = plantData.cycle;
-      this.modalCareGuide.innerHTML = plantData.care_level;
-      this.modal.classList.toggle('fade');
+      return plantData;
 
     } catch (error) {
       console.error('error:' , error);
