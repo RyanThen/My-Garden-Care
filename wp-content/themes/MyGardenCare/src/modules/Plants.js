@@ -7,6 +7,7 @@ class Plants {
     if(document.querySelector('#my-garden-wrap')) {
 
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce
+
       // inject html with relevant data
       this.getPlantList();
       this.plantModalMarkup();
@@ -25,6 +26,7 @@ class Plants {
       setTimeout(() => {
         this.addPlantBtns = this.plantListContainer.querySelectorAll('.add-plant-btn');
         this.plantDetailBtns = this.plantListContainer.querySelectorAll('.plant-details-btn');
+        // Events
         this.events();
       }, 1000);
     
@@ -36,17 +38,14 @@ class Plants {
       closeTrigger.addEventListener('click', this.removePlantModal.bind(this));
     });
 
-    // add plant
+    // add plant buttons
     this.addPlantBtns.forEach( item => {
       item.addEventListener('click', e => {
-        // const currentPlantListItem = e.target.closest('.plant-list-item');
-        // const currentPlantID = currentPlantListItem.dataset.id;
-
         this.addPlant(e);
       });
     });
 
-    // plant details
+    // plant details buttons
     this.plantDetailBtns.forEach( item => {
       item.addEventListener('click', e => {
         const currentPlantListItem = e.target.closest('.plant-list-item');
@@ -109,14 +108,24 @@ class Plants {
       }
 
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/`, newPlant);
+      const newPlantResponse = res.data;
 
-      if (res.data) {
-        console.log('Success, New Plant Added - addPlant()', res);
-        
-        // take care of updating the front end here
+      if (newPlantResponse) {
+
+        const gardenListGroup = document.querySelector('.garden-list .list-group');
+
+        gardenListGroup.insertAdjacentHTML('afterbegin', `
+          <a href="${newPlantResponse.link}" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+              <strong class="mb-1">${plantData.common_name}</strong>
+              <small>Wed</small>
+            </div>
+            <div class="col-10 mb-1 small">${plantData.dimension}</div>
+          </a>
+        `);
 
       } else {        
-        console.log('Failure, New Plant NOT Added - addPlant()', res);
+        console.log('Fail, New Plant NOT Added - addPlant()', res);
       }
 
     } catch (e) {

@@ -58,7 +58,7 @@ while(have_posts()) {
         while($myGarden->have_posts()) {
           $myGarden->the_post(); ?>
 
-          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm <?php if($myGarden->post == $myGarden->posts[0]) echo 'active'; ?>" aria-current="true">
+          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
             <div class="d-flex w-100 align-items-center justify-content-between">
               <strong class="mb-1"><?php the_title(); ?></strong>
               <small><?php the_time('D'); ?></small>
@@ -67,7 +67,9 @@ while(have_posts()) {
           </a>
 
         <?php
-        } ?>
+        } 
+        
+        wp_reset_postdata(); ?>
 
         </div>
       </div> <!-- .garden-list -->

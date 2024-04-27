@@ -14,17 +14,74 @@ while(have_posts()) {
       </div>
     </div>
 
-    <div class="generic-content p-5 mb-4 rounded-3">
-      <?php the_content(); ?>
-    </div>
+    <div class="page-inner-container d-flex">
 
-    <li data-id="<?php echo get_the_ID(); ?>">
-      <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. Whenever using user generated info from database as html attribute wrap it in esc_attr() ?>">
-      <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-      <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-      <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content())); // wp_strip_all_tags() removes html tags and comments which are stored in the database along with content ?></textarea>
-      <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
-    </li>
+      <div class="plant-body d-flex flex-column align-items-stretch">
+        <div class="generic-content p-5 mb-4 rounded-3 border-bottom">
+          <?php the_content(); ?>
+        </div>
+
+        <ul class="care-notes-list">
+          <?php 
+            $careNotes = new WP_Query(array(
+              'post_type' => 'care-note',
+              'posts_per_page' => -1,
+              // 'author' => get_current_user_id()
+            ));
+
+            while($careNotes->have_posts()) {
+              $careNotes->the_post(); ?>
+
+            <li class="note" data-id="<?php echo get_the_ID(); ?>">
+              <input readonly class="note-title-field col-50" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. ?>">
+              <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+              <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+              <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content())); // wp_strip_all_tags() removes html tags and comments which are stored in the database along with content ?></textarea>
+              <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+            </li>
+
+            <?php 
+          } ?>
+        </ul>
+
+
+      </div>
+
+      <div class="garden-list d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+        <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+          <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+          <span class="fs-5 fw-semibold">My Garden</span>
+        </a>
+        <div class="list-group list-group-flush border-bottom scrollarea">
+
+        <?php 
+        $current_page_url_http = "http://" . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $current_page_url_https = "https://" . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+        $myGarden = new WP_Query(array(
+          'post_type' => 'my-garden',
+          'posts_per_page' => -1,
+          // 'author' => get_current_user_id()
+        ));
+
+        while($myGarden->have_posts()) {
+          $myGarden->the_post(); ?>
+
+          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm <?php if($myGarden->post->guid == $current_page_url_http && $current_page_url_https) echo 'active'; ?>" aria-current="true">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+              <strong class="mb-1"><?php the_title(); ?></strong>
+              <small><?php the_time('D'); ?></small>
+            </div>
+            <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+          </a>
+
+        <?php
+        } ?>
+
+        </div>
+      </div> <!-- .garden-list -->
+
+    </div>
 
   </div>
 
