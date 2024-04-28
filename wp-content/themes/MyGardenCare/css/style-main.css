@@ -33,6 +33,10 @@ i.list-leaf {
 
 
 .care-notes-list {
+  padding-left: 0;
+}
+
+.note-list {
   list-style-type: none;
 }
 
@@ -160,4 +164,33 @@ i.list-leaf {
   height: 170px;
   font-size: 1.15rem;
   line-height: 1.65;
+}
+
+/* .btn {
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.19rem;
+  padding: 12px 24px;
+  border: none;
+  outline: none;
+} */
+
+.btn--small {
+  font-size: 0.88rem;
+  padding: 7px 13px;
+  font-weight: 300;
+}
+
+.btn--blue {
+  background: linear-gradient(#0D3B66, #0D3B66);
+  color: white;
+}
+
+.btn--blue:hover {
+  background: linear-gradient(#12518d, #0D3B66);
+  color: white;
 }

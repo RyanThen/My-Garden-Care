@@ -3,13 +3,17 @@ import axios from 'axios';
 class PlantNotes {
 
   constructor() {
+    axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
+
     this.myNotes = document.querySelector(".care-notes-list");
+    this.initialNoteTitle;
+    this.initialNoteBody;
     this.events();
   }
 
   events() {
     this.myNotes.addEventListener("click", e => this.clickHandler(e));
-    // document.querySelector(".submit-note").addEventListener("click", () => this.createNote())
+    document.querySelector(".create-note").addEventListener("click", () => this.createNote())
   }
 
   clickHandler(e) {
@@ -18,14 +22,54 @@ class PlantNotes {
     // if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
   }
 
+  async createNote() {
+    const associatedPlantID = document.querySelector('.page-container').dataset.plantid;
+    let noteTitle = document.querySelector('.create-care-note .note-title-field');
+    let noteBody = document.querySelector('.create-care-note .note-body-field');
+
+    const newNote = {
+      "title": noteTitle.value,
+      "content": noteBody.value,
+      "plant_id": associatedPlantID,
+      "status": "publish"
+    }
+
+    const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNote);
+    const newNoteData = JSON.parse(res.config.data);
+
+    if(res.status == 200) {
+      noteTitle.value = '';
+      noteBody.value = '';
+      
+      const newNoteMarkup = `
+        <li class="note" data-id="">
+          <input readonly class="note-title-field" value="${newNoteData.title}">
+          <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+          <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+          <textarea readonly class="note-body-field">${newNoteData.content}</textarea>
+          <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+        </li>
+      `
+      this.myNotes.insertAdjacentHTML('afterbegin', newNoteMarkup);
+    }
+
+    console.log(newNoteData);
+  }
+
   editNote(e) {
     const thisNote = e.target.closest('.note');
 
-    if (thisNote.getAttribute("data-state") == "editable") {
+    if (thisNote.getAttribute("data-state") == "editable") { // cancel button click
       this.makeNoteReadOnly(thisNote);
-    } else {
+      // reset fields
+      thisNote.querySelector('.note-title-field').value = this.initialNoteTitle;
+      thisNote.querySelector('.note-body-field').value = this.initialNoteBody;
+    } else { // edit button click
       this.makeNoteEditable(thisNote);
     }
+
+    this.initialNoteTitle = thisNote.querySelector('.note-title-field').value;
+    this.initialNoteBody = thisNote.querySelector('.note-body-field').value;
   }
 
   makeNoteEditable(thisNote) {

@@ -1,13 +1,6 @@
 <?php
-// Register custom REST API fields
-add_action('rest_api_init', 'mgc_rest_api');
 
-function mgc_rest_api() {
-  register_rest_field('my-garden', 'care_note', array(
-    'get_callback' => function() { return 'this is just a test'; } // <--php here
-  ));
-} 
-
+require get_theme_file_path('/inc/care-notes-route.php');
 
 add_action('wp_enqueue_scripts', 'mgc_theme_files');
 

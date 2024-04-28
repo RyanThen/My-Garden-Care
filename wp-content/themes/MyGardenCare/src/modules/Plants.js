@@ -6,7 +6,7 @@ class Plants {
   constructor() {
     if(document.querySelector('#my-garden-wrap')) {
 
-      axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce
+      axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
       // inject html with relevant data
       this.getPlantList();
