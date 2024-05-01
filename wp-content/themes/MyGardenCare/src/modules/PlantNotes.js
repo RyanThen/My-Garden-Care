@@ -17,43 +17,71 @@ class PlantNotes {
   }
 
   clickHandler(e) {
-    // if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
+    if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
     if (e.target.classList.contains("edit-note") || e.target.classList.contains("fa-pencil") || e.target.classList.contains("fa-times")) this.editNote(e);
-    // if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
+    // if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
+  }
+
+  async updateNote(e) {
+    try {
+      const thisNote = e.target.closest('.note');
+      const thisNoteID = thisNote.dataset.id;
+      let noteTitle = thisNote.querySelector('.note-title-field');
+      let noteBody = thisNote.querySelector('.note-body-field');
+  
+      const updatedNote = {
+        "title": noteTitle.value,
+        "content": noteBody.value
+      }
+  
+      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/care-note/${thisNoteID}/`, updatedNote);
+  
+      if(res.data) {
+        this.makeNoteReadOnly(thisNote);
+      }
+
+    } catch (error) {
+      console.error('error:' , error);
+    }
+    
   }
 
   async createNote() {
-    const associatedPlantID = document.querySelector('.page-container').dataset.plantid;
-    let noteTitle = document.querySelector('.create-care-note .note-title-field');
-    let noteBody = document.querySelector('.create-care-note .note-body-field');
+    try {
+      const associatedPlantID = document.querySelector('.page-container').dataset.plantid;
+      let noteTitle = document.querySelector('.create-care-note .note-title-field');
+      let noteBody = document.querySelector('.create-care-note .note-body-field');
+  
+      const newNote = {
+        "title": noteTitle.value,
+        "content": noteBody.value,
+        "plant_id": associatedPlantID,
+        "status": "publish"
+      }
+  
+      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNote);
+      const newNoteData = JSON.parse(res.config.data);
+  
+      if(res.status == 200) {
+        noteTitle.value = '';
+        noteBody.value = '';
+        
+        const newNoteMarkup = `
+          <li class="note" data-id="">
+            <input readonly class="note-title-field" value="${newNoteData.title}">
+            <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+            <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+            <textarea readonly class="note-body-field">${newNoteData.content}</textarea>
+            <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+          </li>
+        `
+        this.myNotes.insertAdjacentHTML('afterbegin', newNoteMarkup);
+      }
 
-    const newNote = {
-      "title": noteTitle.value,
-      "content": noteBody.value,
-      "plant_id": associatedPlantID,
-      "status": "publish"
+    } catch (error) {
+      console.error('error:' , error);
     }
-
-    const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNote);
-    const newNoteData = JSON.parse(res.config.data);
-
-    if(res.status == 200) {
-      noteTitle.value = '';
-      noteBody.value = '';
-      
-      const newNoteMarkup = `
-        <li class="note" data-id="">
-          <input readonly class="note-title-field" value="${newNoteData.title}">
-          <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-          <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-          <textarea readonly class="note-body-field">${newNoteData.content}</textarea>
-          <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
-        </li>
-      `
-      this.myNotes.insertAdjacentHTML('afterbegin', newNoteMarkup);
-    }
-
-    console.log(newNoteData);
+    
   }
 
   editNote(e) {
