@@ -54,7 +54,6 @@ while(have_posts()) {
                 
                 if ($currentPostID == get_field('plant_id')) { ?>
 
-                  <!-- I COULD ALSO ADD A "data-parent-id=$currentPostID" SO I CAN MORE EASILY TARGET FROM JAVASCRIPT -->
                   <li class="note" data-id="<?php echo get_the_ID(); ?>">
                     <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. ?>">
                     <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>

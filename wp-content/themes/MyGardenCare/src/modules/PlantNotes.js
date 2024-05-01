@@ -13,65 +13,42 @@ class PlantNotes {
 
   events() {
     this.myNotes.addEventListener("click", e => this.clickHandler(e));
-    document.querySelector(".create-note").addEventListener("click", () => this.createNote())
+    document.querySelector(".create-note").addEventListener("click", () => this.createNote());
   }
 
   clickHandler(e) {
     if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
     if (e.target.classList.contains("edit-note") || e.target.classList.contains("fa-pencil") || e.target.classList.contains("fa-times")) this.editNote(e);
-    // if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
-  }
-
-  async updateNote(e) {
-    try {
-      const thisNote = e.target.closest('.note');
-      const thisNoteID = thisNote.dataset.id;
-      let noteTitle = thisNote.querySelector('.note-title-field');
-      let noteBody = thisNote.querySelector('.note-body-field');
-  
-      const updatedNote = {
-        "title": noteTitle.value,
-        "content": noteBody.value
-      }
-  
-      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/care-note/${thisNoteID}/`, updatedNote);
-  
-      if(res.data) {
-        this.makeNoteReadOnly(thisNote);
-      }
-
-    } catch (error) {
-      console.error('error:' , error);
-    }
-    
+    if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
   }
 
   async createNote() {
     try {
-      const associatedPlantID = document.querySelector('.page-container').dataset.plantid;
-      let noteTitle = document.querySelector('.create-care-note .note-title-field');
-      let noteBody = document.querySelector('.create-care-note .note-body-field');
+      const plantID = document.querySelector('.page-container').dataset.plantid;
+      let noteTitleField = document.querySelector('.create-care-note .note-title-field');
+      let noteBodyField = document.querySelector('.create-care-note .note-body-field');
   
-      const newNote = {
-        "title": noteTitle.value,
-        "content": noteBody.value,
-        "plant_id": associatedPlantID,
+      const newNoteData = {
+        "title": noteTitleField.value,
+        "content": noteBodyField.value,
+        "plant_id": plantID,
         "status": "publish"
       }
   
-      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNote);
-      const newNoteData = JSON.parse(res.config.data);
+      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNoteData);
+      const newNotePostID = res.data;
+      const newNote = JSON.parse(res.config.data);
   
       if(res.status == 200) {
-        noteTitle.value = '';
-        noteBody.value = '';
+        noteTitleField.value = '';
+        noteBodyField.value = '';
         
         const newNoteMarkup = `
-          <li class="note" data-id="">
-            <input readonly class="note-title-field" value="${newNoteData.title}">
+          <li class="note" data-id="${newNotePostID}">
+            <input readonly class="note-title-field" value="${newNote.title}">
             <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
             <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-            <textarea readonly class="note-body-field">${newNoteData.content}</textarea>
+            <textarea readonly class="note-body-field">${newNote.content}</textarea>
             <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
           </li>
         `
@@ -98,6 +75,47 @@ class PlantNotes {
 
     this.initialNoteTitle = thisNote.querySelector('.note-title-field').value;
     this.initialNoteBody = thisNote.querySelector('.note-body-field').value;
+  }
+
+  async updateNote(e) {
+    try {
+      const thisNote = e.target.closest('.note');
+      const thisNoteID = thisNote.dataset.id;
+      let noteTitleField = thisNote.querySelector('.note-title-field');
+      let noteBodyField = thisNote.querySelector('.note-body-field');
+  
+      const updatedNote = {
+        "title": noteTitleField.value,
+        "content": noteBodyField.value
+      }
+  
+      const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/care-note/${thisNoteID}/`, updatedNote);
+  
+      if(res.data) {
+        this.makeNoteReadOnly(thisNote);
+      }
+
+    } catch (error) {
+      console.error('error:' , error);
+    }
+    
+  }
+
+  async deleteNote(e) {
+    try {
+      const thisNote = e.target.closest('.note');
+      const thisNoteID = thisNote.dataset.id;
+      
+      const res = await axios.delete(`${mgcThemeData.root_url}/wp-json/wp/v2/care-note/${thisNoteID}/`);
+  
+      if(res.data) {
+        this.myNotes.removeChild(thisNote);
+      }      
+
+    } catch (error) {
+      console.error('error:' , error);
+    }
+    
   }
 
   makeNoteEditable(thisNote) {
