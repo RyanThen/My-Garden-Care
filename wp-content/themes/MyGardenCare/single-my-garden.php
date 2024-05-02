@@ -7,18 +7,24 @@ while(have_posts()) {
   <div class="page-container container py-4" data-plantid="<?php echo get_the_ID(); ?>">
 
     <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-      <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
-        <p class="col-md-8 fs-4">Common Names: </p>
-        <button class="btn btn-primary btn-lg" type="button">See Notes</button>
+      <div class="container-fluid d-flex justify-content-between py-5">
+        <div class="hero-content-container">
+          <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
+          <h3 class="plant-hero-common-name col-md-8 fs-4 my-3">Common Names: </h3>
+          <div class="plant-hero-content"><?php the_content(); ?></div>
+          <a class="btn btn-primary btn-lg" href="#care-notes-list">See Saved Notes</a>
+        </div>
+        <div class="plant-hero-img-container">
+          <img class="plant-hero-img" src="#">
+        </div>
       </div>
     </div>
 
     <div class="page-inner-container d-flex">
 
       <div class="plant-body d-flex flex-column align-items-stretch">
-        <div class="generic-content p-5 mb-4 rounded-3">
-          <?php the_content(); ?>
+        <div class="plant-info-container generic-content p-5 mb-4 rounded-3">
+          <!-- Plant Info -->
         </div>
 
         <div class="notes-wrap">
@@ -39,7 +45,7 @@ while(have_posts()) {
 
           <h2 class="headline pt-5 pb-3 border-top">Saved notes</h2>
 
-          <ul class="care-notes-list note-list">
+          <ul id="care-notes-list" class="care-notes-list note-list">
             <?php 
               $currentPostID = get_the_ID();
 
@@ -96,7 +102,7 @@ while(have_posts()) {
               <strong class="mb-1"><?php the_title(); ?></strong>
               <small><?php the_time('D'); ?></small>
             </div>
-            <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            <div class="col-10 mb-1 small"><?php echo wp_trim_words(get_the_content(), 10); ?></div>
           </a>
 
         <?php

@@ -17,9 +17,46 @@ i.list-leaf {
 }
 
 
+.hero-content-container {
+  width: min(650px, 100%);
+}
+
+.plant-hero-common-name {
+  width: 100%;
+}
+
+.plant-hero-content {
+  font-size: 1rem;
+}
+
+.plant-hero-img {
+  max-width: 350px;
+}
+
+.plant-list-item {
+  margin-top: 0;
+  padding-block: 25px;
+  border-block: 1px solid lightgrey;
+}
+
+.plant-list-item > .col {
+  width: 100%;
+}
+
+.plant-list-item > .col > * {
+  width: 100%;
+}
+
+.plant-list-item .plant-img {
+  max-width: 170px;
+  border: 1px solid grey;
+}
+
+
 .garden-list {
   width: 380px;
   margin-left: auto;
+  border: 1px solid #ededed;
 }
 
 .modal:not(.fade) {
@@ -193,4 +230,8 @@ i.list-leaf {
 .btn--blue:hover {
   background: linear-gradient(#12518d, #0D3B66);
   color: white;
+}
+
+.font-italic {
+  font-style: italic !important;
 }

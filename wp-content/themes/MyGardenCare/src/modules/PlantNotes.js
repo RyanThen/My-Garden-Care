@@ -1,19 +1,67 @@
 import axios from 'axios';
+import { apiKeyPerenual } from './api.js';
 
 class PlantNotes {
 
   constructor() {
-    axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
+    if(document.querySelector('.plant-body')) {
+      axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
-    this.myNotes = document.querySelector(".care-notes-list");
-    this.initialNoteTitle;
-    this.initialNoteBody;
-    this.events();
+      this.myNotes = document.querySelector(".care-notes-list");
+      this.initialNoteTitle;
+      this.initialNoteBody;
+      this.events();
+    }
   }
 
   events() {
-    this.myNotes.addEventListener("click", e => this.clickHandler(e));
+    this.populatePlantInfo();
+
+    // create note
     document.querySelector(".create-note").addEventListener("click", () => this.createNote());
+
+    // edit, delete, update notes
+    this.myNotes.addEventListener("click", e => this.clickHandler(e));
+  }
+
+  async populatePlantInfo() {
+    const plantID = document.querySelector('.page-container').dataset.plantid;
+
+    try {
+      const res = await axios.get(`https://perenual.com/api/species/details/${plantID}?key=${apiKeyPerenual}`);
+      const plantData = res.data;
+
+      console.log(plantData);
+
+      const careGuide = await axios.get(`https://perenual.com/api/species-care-guide-list?species_id=${plantID}&key=${apiKeyPerenual}`)
+      const careGuideData = careGuide.data.data[0].section;
+
+      console.log('Care Guide', careGuideData);
+
+      if(plantData) {
+        document.querySelector('.plant-hero-img').setAttribute('src', plantData.default_image.medium_url);
+        document.querySelector('.plant-hero-common-name').insertAdjacentHTML('beforeend', plantData.common_name);
+        document.querySelector('.plant-info-container').insertAdjacentHTML('beforeend', `
+
+          ${careGuideData.map(careItem => `
+            <h4 class="plant-info-headline">${(careItem.type[0].toUpperCase() + careItem.type.slice(1))}</h4>
+            <p class="plant-info">${careItem.description}</p>
+          `).join('')}
+
+          <p class="plant-info"><span>Care Level:</span> ${plantData.care_level}</p>  
+          <p class="plant-info"><span>Cycle:</span> ${plantData.cycle}</p>
+          <p class="plant-info"><span>Flowering Season:</span> ${plantData.flowering_season}</p>
+          <p class="plant-info"><span>Harvest Season:</span> ${plantData.harvest_season}</p>
+          <p class="plant-info"><span>Draught Tolerant:</span> ${plantData.drought_tolerant ? 'Yes' : 'No'}</p>
+          <p class="plant-info"><span>Edible:</span> ${plantData.edible_fruit ? 'Yes' : 'No'}</p>
+          <p class="plant-info"><span>Soil:</span> ${plantData.soil.map(soilType => soilType).join(', ')}</p>
+        `);
+      }
+
+    } catch (error) {
+      console.error('error:' , error);
+    }
+
   }
 
   clickHandler(e) {
@@ -137,6 +185,8 @@ class PlantNotes {
     thisNote.querySelector(".update-note").classList.remove("update-note--visible")
     thisNote.setAttribute("data-state", "cancel")
   }
+
+
 
 }
 

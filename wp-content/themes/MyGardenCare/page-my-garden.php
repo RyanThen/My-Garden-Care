@@ -17,7 +17,7 @@ while(have_posts()) {
       <div class="container-fluid py-5">
         <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
         <p class="col-md-8 fs-4">Welcome to your digital garden! This is where you can add plants, care notes or other helpful information for your plant caregivers.</p>
-        <button class="btn btn-primary btn-lg" type="button">Example button</button>
+        <a class="btn btn-primary btn-lg" href="#plant-list">Browse plant list</a>
       </div>
     </div>
 
@@ -26,16 +26,21 @@ while(have_posts()) {
 
       <div class="garden-body d-flex flex-column align-items-stretch">
 
-        <div class="container">
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-4" role="search">
-            <input type="search" class="form-control form-control-white text-bg-white" placeholder="Search for plants..." aria-label="Search">
+        <div class="container ps-0 pe-5 py-5">
+          <h2 class="pb-2 font-italic">Search for plants</h2>
+          <form id="plant-search-form" class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-4" role="search">
+            <input id="plant-search-field" class="form-control form-control-white text-bg-white" name="plant-search" type="search" placeholder="Search for plants..." aria-label="Search">
+            <input class="btn btn-primary mx-2" type="submit" value="Submit!">
           </form>
         </div>
         
-        <div class="container ps-0 pe-5 py-5" id="icon-grid">
-          <h2 class="pb-2 border-bottom">Plant Search Results</h2>
+        <div class="container ps-0 pe-5 py-4" id="icon-grid">
+          <h2 class="pb-2 text-decoration-underline">Plant List:</h2>
           <div id="plant-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4 py-5">
             <!-- Plant List Data -->
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary btn-load-more">Get More Results</button>
           </div>
         </div>
 
@@ -63,7 +68,7 @@ while(have_posts()) {
               <strong class="mb-1"><?php the_title(); ?></strong>
               <small><?php the_time('D'); ?></small>
             </div>
-            <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            <div class="col-10 mb-1 small"><?php echo wp_trim_words(get_the_content(), 10); ?></div>
           </a>
 
         <?php
