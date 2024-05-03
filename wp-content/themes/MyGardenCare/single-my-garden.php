@@ -4,15 +4,20 @@ while(have_posts()) {
   the_post(); ?>
 
 <!-- Jumbotron -->
-  <div class="page-container container py-4" data-plantid="<?php echo get_the_ID(); ?>">
+  <div class="single-my-garden page-container container py-4" data-plantid="<?php echo get_the_ID(); ?>">
 
-    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3 border">
       <div class="container-fluid d-flex justify-content-between py-5">
         <div class="hero-content-container">
           <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
           <h3 class="plant-hero-common-name col-md-8 fs-4 my-3">Common Names: </h3>
-          <div class="plant-hero-content"><?php the_content(); ?></div>
-          <a class="btn btn-primary btn-lg" href="#care-notes-list">See Saved Notes</a>
+          <div class="plant-hero-content py-2">
+            <?php the_content(); ?>
+          </div>
+          <div class="plant-hero-btn-group d-flex gap-3">
+            <a class="btn btn-danger btn-lg" href="#">Get QR Code</a>
+            <a class="btn btn-outline-dark btn-lg" href="#care-notes-list">See Notes Below</a>
+          </div>
         </div>
         <div class="plant-hero-img-container">
           <img class="plant-hero-img" src="#">
@@ -47,7 +52,7 @@ while(have_posts()) {
 
           <ul id="care-notes-list" class="care-notes-list note-list">
             <?php 
-              $currentPostID = get_the_ID();
+              $currentPageID = get_the_ID();
 
               $careNotes = new WP_Query(array(
                 'post_type' => 'care-note',
@@ -58,7 +63,7 @@ while(have_posts()) {
               while($careNotes->have_posts()) {
                 $careNotes->the_post(); 
                 
-                if ($currentPostID == get_field('plant_id')) { ?>
+                if ($currentPageID == get_field('plant_id')) { ?>
 
                   <li class="note" data-id="<?php echo get_the_ID(); ?>">
                     <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. ?>">
@@ -85,9 +90,6 @@ while(have_posts()) {
         <div class="list-group list-group-flush border-bottom scrollarea">
 
         <?php 
-        $current_page_url_http = "http://" . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        $current_page_url_https = "https://" . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
         $myGarden = new WP_Query(array(
           'post_type' => 'my-garden',
           'posts_per_page' => -1,
@@ -95,17 +97,10 @@ while(have_posts()) {
         ));
 
         while($myGarden->have_posts()) {
-          $myGarden->the_post(); ?>
+          $myGarden->the_post(); 
+          
+          get_template_part('/template-parts/my-garden-list', null, $args = array('current_page_id' => $currentPageID));
 
-          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm <?php if($myGarden->post->guid == $current_page_url_http && $current_page_url_https) echo 'active'; ?>" aria-current="true">
-            <div class="d-flex w-100 align-items-center justify-content-between">
-              <strong class="mb-1"><?php the_title(); ?></strong>
-              <small><?php the_time('D'); ?></small>
-            </div>
-            <div class="col-10 mb-1 small"><?php echo wp_trim_words(get_the_content(), 10); ?></div>
-          </a>
-
-        <?php
         } ?>
 
         </div>

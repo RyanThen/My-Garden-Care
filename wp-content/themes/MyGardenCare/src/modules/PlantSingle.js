@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
 
-class PlantNotes {
+class PlantSingle {
 
   constructor() {
-    if(document.querySelector('.plant-body')) {
+    if(document.querySelector('.single-my-garden')) {
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
       this.myNotes = document.querySelector(".care-notes-list");
@@ -18,7 +18,7 @@ class PlantNotes {
     this.populatePlantInfo();
 
     // create note
-    document.querySelector(".create-note").addEventListener("click", () => this.createNote());
+    document.querySelector(".create-note").addEventListener("click", this.createNote.bind(this));
 
     // edit, delete, update notes
     this.myNotes.addEventListener("click", e => this.clickHandler(e));
@@ -190,4 +190,4 @@ class PlantNotes {
 
 }
 
-export default PlantNotes;
+export default PlantSingle;

@@ -11,13 +11,15 @@ while(have_posts()) {
   the_post(); ?>
 
 <!-- Jumbotron -->
-  <div id="my-garden-wrap" class="container py-4">
+  <div class="my-garden container py-4">
 
-    <div class="p-5 mb-5 bg-body-tertiary rounded-3">
+    <div class="hero-bg-img p-5 mb-5 bg-body-tertiary rounded-3" style="background-image: url(<?php echo site_url('/wp-content/uploads/2024/04/markus-spiske-vrbZVyX2k4I-unsplash-scaled.jpg'); ?>);">
       <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
-        <p class="col-md-8 fs-4">Welcome to your digital garden! This is where you can add plants, care notes or other helpful information for your plant caregivers.</p>
-        <a class="btn btn-primary btn-lg" href="#plant-list">Browse plant list</a>
+        <div class="hero-text-overlay">
+          <h1 class="display-5 fw-bold text-white"><?php the_title(); ?></h1>
+          <p class="fs-4 py-2 text-white">Your digital garden. Where you can add plants, care notes, print QR codes and more!</p>
+          <a class="btn btn-outline-light btn-lg" href="#plant-list">Browse plant list</a>
+        </div>
       </div>
     </div>
 
@@ -30,7 +32,7 @@ while(have_posts()) {
           <h2 class="pb-2 font-italic">Search for plants</h2>
           <form id="plant-search-form" class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-4" role="search">
             <input id="plant-search-field" class="form-control form-control-white text-bg-white" name="plant-search" type="search" placeholder="Search for plants..." aria-label="Search">
-            <input class="btn btn-primary mx-2" type="submit" value="Submit!">
+            <input class="btn btn-danger mx-2" type="submit" value="Submit">
           </form>
         </div>
         
@@ -40,7 +42,7 @@ while(have_posts()) {
             <!-- Plant List Data -->
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary btn-load-more">Get More Results</button>
+            <button class="btn btn-outline-dark btn-load-more">Get More Results</button>
           </div>
         </div>
 
@@ -54,6 +56,8 @@ while(have_posts()) {
         <div class="list-group list-group-flush border-bottom scrollarea">
 
         <?php 
+        $currentPageID = get_the_ID();
+
         $myGarden = new WP_Query(array(
           'post_type' => 'my-garden',
           'posts_per_page' => -1,
@@ -61,17 +65,10 @@ while(have_posts()) {
         ));
 
         while($myGarden->have_posts()) {
-          $myGarden->the_post(); ?>
+          $myGarden->the_post(); 
+          
+          get_template_part('/template-parts/my-garden-list', null, $args = array('current_page_id' => $currentPageID)); 
 
-          <a href="<?php echo get_the_permalink(); ?>" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-            <div class="d-flex w-100 align-items-center justify-content-between">
-              <strong class="mb-1"><?php the_title(); ?></strong>
-              <small><?php the_time('D'); ?></small>
-            </div>
-            <div class="col-10 mb-1 small"><?php echo wp_trim_words(get_the_content(), 10); ?></div>
-          </a>
-
-        <?php
         } 
         
         wp_reset_postdata(); ?>

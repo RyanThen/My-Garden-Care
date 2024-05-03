@@ -5,11 +5,14 @@ class Events {
   
   constructor() {
     this.eventBlock = document.querySelector('.event-block-container');
-    this.events();
+    
+    if(this.eventBlock) {
+      this.events();
+    }   
   }
 
   events() {
-    if(this.eventBlock) this.getEventResults();
+    this.getEventResults();
   }
 
   async getEventResults() {
@@ -18,8 +21,6 @@ class Events {
       // find event by subgenre
       const res = await axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?subGenreId=KZazBEonSMnZfZ7vAvF&apikey=${apiKeyTicketmaster}`);
       const event = res.data._embedded.events;
-     
-      console.log(res);
 
       let eventListTemplate = '';
       let eventCount = 0;

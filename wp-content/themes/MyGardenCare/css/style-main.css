@@ -21,6 +21,28 @@ i.list-leaf {
   width: min(650px, 100%);
 }
 
+.hero-bg-img { 
+  background-size: cover;
+  background-position: center; 
+}
+
+.hero-text-overlay {
+  display: inline-block;
+  width: min(650px, 100%);
+  padding: 35px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 15px;
+}
+
+.hero-text-overlay > * {
+  text-shadow: 1px 1px 1px black;
+}
+
+/* .hero-text-overlay > * {
+  color: white;
+} */
+
+
 .plant-hero-common-name {
   width: 100%;
 }

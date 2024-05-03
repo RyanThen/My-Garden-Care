@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
 
-class Plants {
+class MyGarden {
 
   constructor() {
-    if(document.querySelector('#my-garden-wrap')) {
+    if(document.querySelector('.my-garden')) {
 
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
@@ -246,4 +246,4 @@ class Plants {
 
 }
 
-export default Plants;
+export default MyGarden;

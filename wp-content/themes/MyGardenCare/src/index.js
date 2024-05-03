@@ -2,8 +2,10 @@
 
 // Modules / classes
 import Events from "./modules/Events.js"
-import Plants from "./modules/Plants.js"
+import MyGarden from "./modules/MyGarden.js"
+import PlantSingle from "./modules/PlantSingle.js"
 
 // Instantiate a new object using our modules/classes
 const events = new Events()
-const plants = new Plants()
+const myGarden = new MyGarden()
+const plantSingle = new PlantSingle()
