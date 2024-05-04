@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <!-- Hero -->
-<div class="px-4 pt-5 mt-3 text-center border-bottom">
+<div class="px-4 pt-5 mt-3 text-center">
   <h1 class="display-4 fw-bold text-body-emphasis">My Garden Care</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead mb-4">All your garden care needs in one place without the fuss.</p>
@@ -10,7 +10,7 @@
       <a class="btn btn-outline-dark btn-lg px-4" href="<?php echo esc_url(site_url('/learning-center')); ?>">Learning Center</a>
     </div>
   </div>
-  <div class="overflow-hidden" style="max-height: 35vh;">
+  <div class="" style="max-height: 37.5vh;">
     <div class="container-fluid px-5">
       <img src="<?php echo esc_url(site_url('/wp-content/uploads/2024/04/my-garden-care-hero-img-scaled.jpg')); ?>" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="100%" height="600" loading="lazy" style="">
     </div>
@@ -19,8 +19,8 @@
 
 <!-- Events and Blog Lists -->
 <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block">
-    <div class="my-3 p-3">
+  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block border rounded-3">
+    <div class="mb-3 p-3">
       <h2 class="display-5">Events near you</h2>
       <p class="lead">Lorem ipsum dolor sit amet.</p>
     </div>
@@ -33,8 +33,8 @@
     </div>
   </div>
 
-  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block">
-    <div class="my-3 py-3">
+  <div class="bg-body-tertiary flex-grow-1 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden list-block border rounded-3">
+    <div class="mb-3 py-3">
       <h2 class="display-5">From our blog</h2>
       <p class="lead">Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </div>
@@ -62,7 +62,10 @@
               </div>
             </a>
 
-          <?php } ?>
+          <?php } 
+          
+          wp_reset_postdata(); ?>
+
       </div>
 
     </div>

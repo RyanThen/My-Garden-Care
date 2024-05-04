@@ -51,9 +51,43 @@ add_action('admin_init', 'redirect_subs_to_frontend');
 function redirect_subs_to_frontend() {
   $current_user = wp_get_current_user();
 
-  // $current_user->roles will return an array
   if(count($current_user->roles) == 1 && $current_user->roles[0] == 'subscriber') {
     wp_redirect(site_url('/'));
     exit;
   }
+}
+
+
+// remove admin bar for subscriber roles
+add_action('wp_loaded', 'no_subs_admin_bar');
+
+function no_subs_admin_bar() {
+  $current_user = wp_get_current_user();
+
+  if(count($current_user->roles) == 1 && $current_user->roles[0] == 'subscriber') {
+    show_admin_bar(false);
+  }
+}
+
+
+// force notes to be private
+add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
+
+function makeNotePrivate($data, $postarr) {
+  if($data['post_type'] == 'care-note') {
+    $data['post_title'] = sanitize_text_field($data['post_title']);
+    $data['post_content'] = sanitize_textarea_field($data['post_content']);
+
+    // limit number of notes
+    if(count_user_posts(get_current_user_id(), 'care-note') > 20 && !$postarr['ID']) {
+      die('You have reached your note limit');
+    }
+  }
+
+  // force note posts to be 'private'
+  if($data['post_type'] == 'care-note' && $data['post_status'] != 'trash') {
+    $data['post_status'] = 'private';
+  }
+
+  return $data;
 }

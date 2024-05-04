@@ -1,16 +1,21 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
+import PlantModal from './PlantModal.js';
 
 class MyGarden {
 
   constructor() {
+
     if(document.querySelector('.my-garden')) {
 
+      // add request headers
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
       // inject html with relevant data
       this.getPlantList();
-      this.plantModalMarkup();
+
+      // instantiate modal markup and functionality (imported from PlantModal.js)
+      this.plantModal = new PlantModal;
 
       this.plantSearchForm = document.querySelector('#plant-search-form');
       this.plantSearchField = document.querySelector('#plant-search-field');
@@ -19,68 +24,51 @@ class MyGarden {
       this.loadMoreBtn = document.querySelector('.btn-load-more');
       this.loadMoreBtnClickCount = 1;
 
-      this.modal = document.querySelector('.modal');
-      this.modalClose = document.querySelectorAll('.modal-close');
-      this.modalTitle = document.querySelector('.modal-title');
-      this.modalDescription = document.querySelector('.modal-description');
-      this.modalOrigin = document.querySelector('.modal-origin');
-      this.modalCycle = document.querySelector('.modal-cycle');
-
-      // wait for markup to be ready before finding selectors and running events()
+      // EVENTS: wait for markup/data to be ready from api call before finding selectors and running events()
       setTimeout(() => {
-        this.addPlantBtns = this.plantListContainer.querySelectorAll('.add-plant-btn');
-        this.plantDetailBtns = this.plantListContainer.querySelectorAll('.plant-details-btn');
-        // Events
         this.events();
       }, 1000);
-    
     } 
+
   }
 
-  events() {
 
+  events() {
     // plant search
     this.plantSearchForm.addEventListener('submit', e => this.plantSearchFormSubmit(e));
 
-    // add plant buttons
-    this.addPlantBtns.forEach( item => {
-      item.addEventListener('click', e => this.addPlant(e));
-    });
+    // // add plant buttons
+    this.addPlantBtnEvents();
 
     // plant details buttons
-    this.plantDetailBtns.forEach( item => {
+    this.plantDetailsBtnEvents();
+
+    // load more results
+    this.loadMoreBtn.addEventListener('click', this.loadMoreResults.bind(this));
+  }
+
+  addPlantBtnEvents() {
+    let addPlantBtns = this.plantListContainer.querySelectorAll('.add-plant-btn'); 
+    // click
+    addPlantBtns.forEach( item => {
+      item.addEventListener('click', e => this.addPlant(e));
+    });
+  }
+
+  plantDetailsBtnEvents() {
+    let plantDetailBtns = this.plantListContainer.querySelectorAll('.plant-details-btn');
+    //click
+    plantDetailBtns.forEach( item => {
       item.addEventListener('click', e => {
         const currentPlantListItem = e.target.closest('.plant-list-item');
         const currentPlantID = currentPlantListItem.dataset.id;
 
+        // get plant details data and build modal
         this.getPlantDetails(currentPlantID, true);
       });
     });
-
-    // close modal pop up
-    this.modalClose.forEach(closeTrigger => {
-      closeTrigger.addEventListener('click', this.removePlantModal.bind(this));
-    });
-
-    // load more results
-    this.loadMoreBtn.addEventListener('click', this.loadMoreResults.bind(this));
-
   }
 
-  async plantSearchFormSubmit(e) {
-    e.preventDefault();
-
-    const searchValue = this.plantSearchField.value;
-
-    const res = await axios.get(`https://perenual.com/api/species-list?key=${apiKeyPerenual}&q=${searchValue}`)
-    const searchPlantData = res.data.data;
-
-    this.plantListContainer.innerHTML = '';
-
-    this.createPlantListMarkup(searchPlantData, this.plantListContainer);
-
-    console.log(searchPlantData);
-  }
 
   createPlantListMarkup(array, resultsContainer) {
 
@@ -116,6 +104,25 @@ class MyGarden {
     resultsContainer.insertAdjacentHTML('beforeend', plantListTemplate);
   }
 
+  async plantSearchFormSubmit(e) {
+    e.preventDefault();
+
+    const searchValue = this.plantSearchField.value;
+
+    const res = await axios.get(`https://perenual.com/api/species-list?key=${apiKeyPerenual}&q=${searchValue}`)
+    const searchPlantData = res.data.data;
+
+    this.plantListContainer.innerHTML = '';
+
+    this.createPlantListMarkup(searchPlantData, this.plantListContainer);
+
+    // reset node lists for "Add Plant" and "Plant Details" buttons
+    this.addPlantBtnEvents();
+    this.plantDetailsBtnEvents();
+
+    console.log(searchPlantData);
+  }
+
   async getPlantList(pageNumber = 1) {
     try {
       const res = await axios.get(`https://perenual.com/api/species-list?key=${apiKeyPerenual}&page=${pageNumber}`);
@@ -128,7 +135,7 @@ class MyGarden {
         this.createPlantListMarkup(plantData, this.plantListContainer);
 
       } else {
-        this.plantListContainer.insertAdjacentHTML('afterbegin', '<p>Could not get plant list</p>');
+        this.plantListContainer.insertAdjacentHTML('afterbegin', '<p>Could not retrieve plant list</p>');
       }
 
     } catch (error) {
@@ -137,8 +144,15 @@ class MyGarden {
   }
 
   async loadMoreResults() {
+    // keep track of pagination for api call
     this.loadMoreBtnClickCount++;
+
     await this.getPlantList(this.loadMoreBtnClickCount);
+
+    // reset node lists for "Add Plant" and "Plant Details" buttons
+    this.addPlantBtnEvents();
+    this.plantDetailsBtnEvents();
+
     return this.loadMoreBtnClickCount;
   }
 
@@ -171,7 +185,7 @@ class MyGarden {
           <a href="${newPlantResponse.link}" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
             <div class="d-flex w-100 align-items-center justify-content-between">
               <strong class="mb-1">${plantData.common_name}</strong>
-              <small>Wed</small>
+              <small>Just now</small>
             </div>
             <div class="col-10 mb-1 small">${plantData.description.substring(0, 70)}...</div>
           </a>
@@ -187,19 +201,16 @@ class MyGarden {
 
   }
 
-  async getPlantDetails(id, buildModal = false) {
+  async getPlantDetails(id, buildPlantModal = false) {
     try {
       const res = await axios.get(`https://perenual.com/api/species/details/${id}?key=${apiKeyPerenual}`);
       const plantData = res.data;
 
       console.log(plantData);
 
-      if(buildModal) {
-        this.modalTitle.innerHTML = plantData.common_name;
-        this.modalDescription.innerHTML = plantData.description;
-        this.modalOrigin.innerHTML = plantData.origin.join(', ');
-        this.modalCycle.innerHTML = plantData.cycle;
-        this.modal.classList.toggle('fade');
+      if(buildPlantModal) {
+        // plantModal is being imported from another module
+        this.plantModal.buildPlantModal(plantData);
       }
 
       if(plantData) {
@@ -209,39 +220,6 @@ class MyGarden {
     } catch (error) {
       console.error('error:' , error);
     }
-  }
-
-  removePlantModal() {
-    this.modal.classList.add('fade');
-  }
-
-  plantModalMarkup() {
-    const body = document.querySelector('body');
-
-    const modalMarkup = `
-      <div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5 fade" tabindex="-1" role="dialog" id="modalSheet">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-4 shadow">
-            <div class="modal-header border-bottom-0">
-              <h1 class="modal-title fs-5">PLANT NAME</h1>
-              <button type="button" class="modal-close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body py-0">
-              <div class="modal-body__plant-details-container">
-                <p><b>Description:</b> <span class="modal-description modal-info-item">DESCRIPTION</span></p>
-                <p><b>Origin:</b> <span class="modal-origin modal-info-item">ORIGIN</span></p>
-                <p><b>Cycle:</b> <span class="modal-cycle modal-info-item">CYCLE</span></p>
-              </div>
-            </div>
-            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
-              <button type="button" class="modal-close btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    body.insertAdjacentHTML('beforeend', modalMarkup)
   }
 
 }

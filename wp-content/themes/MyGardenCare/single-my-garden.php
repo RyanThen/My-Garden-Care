@@ -1,4 +1,11 @@
-<?php get_header(); 
+<?php
+// if user is not logged in redirect to homepage
+if (!is_user_logged_in()) { 
+  wp_redirect(esc_url(site_url('/'))); 
+  exit;
+}
+
+get_header(); 
 
 while(have_posts()) {
   the_post(); ?>
@@ -101,7 +108,9 @@ while(have_posts()) {
           
           get_template_part('/template-parts/my-garden-list', null, $args = array('current_page_id' => $currentPageID));
 
-        } ?>
+        } 
+        
+        wp_reset_postdata(); ?>
 
         </div>
       </div> <!-- .garden-list -->

@@ -15,7 +15,7 @@ class PlantSingle {
   }
 
   events() {
-    this.populatePlantInfo();
+    // this.populatePlantInfo();
 
     // create note
     document.querySelector(".create-note").addEventListener("click", this.createNote.bind(this));
@@ -185,8 +185,6 @@ class PlantSingle {
     thisNote.querySelector(".update-note").classList.remove("update-note--visible")
     thisNote.setAttribute("data-state", "cancel")
   }
-
-
 
 }
 
