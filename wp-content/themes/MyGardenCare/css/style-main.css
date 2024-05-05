@@ -42,6 +42,10 @@ i.list-leaf {
   color: white;
 } */
 
+.qr-modal-container {
+  text-align: center;
+}
+
 
 .plant-hero-common-name {
   width: 100%;
@@ -52,7 +56,8 @@ i.list-leaf {
 }
 
 .plant-hero-img {
-  max-width: 350px;
+  max-width: 360px;
+  border: 1px solid black;
 }
 
 .plant-list-item {

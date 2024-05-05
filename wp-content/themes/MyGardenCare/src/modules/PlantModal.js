@@ -5,9 +5,7 @@ class PlantModal {
     this.modal = document.querySelector('.modal');
     this.modalClose = document.querySelectorAll('.modal-close');
     this.modalTitle = document.querySelector('.modal-title');
-    this.modalDescription = document.querySelector('.modal-description');
-    this.modalOrigin = document.querySelector('.modal-origin');
-    this.modalCycle = document.querySelector('.modal-cycle');
+    this.modalBody = document.querySelector('.modal-body');
 
     this.events();
   }
@@ -19,12 +17,8 @@ class PlantModal {
     });
   }
 
-  buildPlantModal(data) {
-    this.modalTitle.innerHTML = data.common_name;
-    this.modalDescription.innerHTML = data.description;
-    this.modalOrigin.innerHTML = data.origin.join(', ');
-    this.modalCycle.innerHTML = data.cycle;
-    this.modal.classList.toggle('fade');
+  displayPlantModal() {
+    this.modal.classList.remove('fade');
   }
 
   removePlantModal() {
@@ -43,11 +37,7 @@ class PlantModal {
               <button type="button" class="modal-close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body py-0">
-              <div class="modal-body__plant-details-container">
-                <p><b>Description:</b> <span class="modal-description modal-info-item">DESCRIPTION</span></p>
-                <p><b>Origin:</b> <span class="modal-origin modal-info-item">ORIGIN</span></p>
-                <p><b>Cycle:</b> <span class="modal-cycle modal-info-item">CYCLE</span></p>
-              </div>
+
             </div>
             <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
               <button type="button" class="modal-close btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>

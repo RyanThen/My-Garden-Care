@@ -1,11 +1,18 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
+import PlantModal from './PlantModal.js';
 
 class PlantSingle {
 
   constructor() {
     if(document.querySelector('.single-my-garden')) {
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
+
+      // instantiate modal markup and functionality (imported from PlantModal.js)
+      this.plantModal = new PlantModal;
+
+      this.qrBtn = document.querySelector('.qr-btn');
+      this.thisPageQrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${document.location.href}`;
 
       this.myNotes = document.querySelector(".care-notes-list");
       this.initialNoteTitle;
@@ -16,6 +23,9 @@ class PlantSingle {
 
   events() {
     // this.populatePlantInfo();
+
+    // QR button
+    this.qrBtn.addEventListener('click', this.getQrCode.bind(this));
 
     // create note
     document.querySelector(".create-note").addEventListener("click", this.createNote.bind(this));
@@ -62,6 +72,42 @@ class PlantSingle {
       console.error('error:' , error);
     }
 
+  }
+
+  getQrCode() {
+    this.plantModal.displayPlantModal();
+
+    this.plantModal.modalTitle.innerHTML = 'Print QR code';
+    this.plantModal.modalBody.innerHTML = `
+      <div class="qr-modal-container my-3">
+        <img src="${this.thisPageQrUrl}&size=300x300">
+      </div>
+      <div class="d-flex flex-column align-items-stretch w-100 gap-2 pt-2">
+        <button type="button" class="print-qr-btn btn btn-lg btn-danger">Print QR Code</button>
+      </div>
+    `
+
+    const printQrBtn = document.querySelector('.print-qr-btn')
+    printQrBtn.addEventListener('click', () => this.printQrCode(this.thisPageQrUrl));
+  }
+
+  printQrCode(source) {
+    const pwa = window.open("about:blank", "_new");
+
+    pwa.document.open();
+    pwa.document.write(`
+      <html>
+        <head>
+          <script>
+            const printImg = () => setTimeout(() => { window.print(); window.close(); }, 15);
+          </script>
+        </head>
+        <body onload='printImg()'>
+          <img src="${source}" />
+        </body>
+      </html>
+    `);
+    pwa.document.close();
   }
 
   clickHandler(e) {

@@ -12,7 +12,7 @@ class MyGarden {
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
       // inject html with relevant data
-      this.getPlantList();
+      // this.getPlantList();
 
       // instantiate modal markup and functionality (imported from PlantModal.js)
       this.plantModal = new PlantModal;
@@ -37,7 +37,7 @@ class MyGarden {
     // plant search
     this.plantSearchForm.addEventListener('submit', e => this.plantSearchFormSubmit(e));
 
-    // // add plant buttons
+    // add plant buttons
     this.addPlantBtnEvents();
 
     // plant details buttons
@@ -209,8 +209,16 @@ class MyGarden {
       console.log(plantData);
 
       if(buildPlantModal) {
-        // plantModal is being imported from another module
-        this.plantModal.buildPlantModal(plantData);
+        this.plantModal.displayPlantModal();
+
+        this.plantModal.modalTitle.innerHTML = plantData.common_name;
+        this.plantModal.modalBody.innerHTML = `
+          <div class="modal-body__plant-details-container">
+            <p><b>Description:</b> <span class="modal-description modal-info-item">${plantData.description}</span></p>
+            <p><b>Origin:</b> <span class="modal-origin modal-info-item">${plantData.origin.join(', ')}</span></p>
+            <p><b>Cycle:</b> <span class="modal-cycle modal-info-item">${plantData.cycle}</span></p>
+          </div>
+        `
       }
 
       if(plantData) {

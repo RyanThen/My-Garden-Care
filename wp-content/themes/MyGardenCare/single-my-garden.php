@@ -1,4 +1,6 @@
 <?php
+$currentPageID = get_the_ID();
+
 // if user is not logged in redirect to homepage
 if (!is_user_logged_in()) { 
   wp_redirect(esc_url(site_url('/'))); 
@@ -22,7 +24,7 @@ while(have_posts()) {
             <?php the_content(); ?>
           </div>
           <div class="plant-hero-btn-group d-flex gap-3">
-            <a class="btn btn-danger btn-lg" href="#">Get QR Code</a>
+            <a class="qr-btn btn btn-danger btn-lg" href="#">Get QR Code</a>
             <a class="btn btn-outline-dark btn-lg" href="#care-notes-list">See Notes Below</a>
           </div>
         </div>
@@ -47,8 +49,6 @@ while(have_posts()) {
 
             <li class="note" data-id="<?php echo get_the_ID(); ?>">
               <input class="note-title-field" value="" placeholder="Note Title...">
-              <!-- <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-              <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span> -->
               <textarea class="note-body-field" placeholder="Note Content..."></textarea>
               <span class="create-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Create Note</span>
             </li>
@@ -59,8 +59,6 @@ while(have_posts()) {
 
           <ul id="care-notes-list" class="care-notes-list note-list">
             <?php 
-              $currentPageID = get_the_ID();
-
               $careNotes = new WP_Query(array(
                 'post_type' => 'care-note',
                 'posts_per_page' => -1,
@@ -89,31 +87,8 @@ while(have_posts()) {
 
       </div>
 
-      <div class="garden-list d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
-        <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-          <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-          <span class="fs-5 fw-semibold">My Garden</span>
-        </a>
-        <div class="list-group list-group-flush border-bottom scrollarea">
-
-        <?php 
-        $myGarden = new WP_Query(array(
-          'post_type' => 'my-garden',
-          'posts_per_page' => -1,
-          // 'author' => get_current_user_id()
-        ));
-
-        while($myGarden->have_posts()) {
-          $myGarden->the_post(); 
-          
-          get_template_part('/template-parts/my-garden-list', null, $args = array('current_page_id' => $currentPageID));
-
-        } 
-        
-        wp_reset_postdata(); ?>
-
-        </div>
-      </div> <!-- .garden-list -->
+      <?php // My Garden List
+      get_template_part('/template-parts/my-garden-list', null, $args = array('current_page_id' => $currentPageID)); ?>
 
     </div>
 
