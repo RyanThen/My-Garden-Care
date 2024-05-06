@@ -86,6 +86,24 @@ i.list-leaf {
   border: 1px solid #ededed;
 }
 
+.garden-list .delete-list-item-btn {
+  transition: opacity 300ms, border-color 300ms;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.garden-list-item:hover .delete-list-item-btn {
+  opacity: 1;
+  pointer-events: all;
+  z-index: 99999;
+}
+
+.garden-list .delete-list-item-btn:hover {
+  border-color: #000 !important;
+  transition: opacity 300ms, border-color 300ms;
+}
+
+
 .modal:not(.fade) {
   position: fixed !important;
 }

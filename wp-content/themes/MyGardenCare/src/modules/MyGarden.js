@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
 import PlantModal from './PlantModal.js';
+import MyGardenList from './MyGardenList.js';
 
 class MyGarden {
 
@@ -182,14 +183,23 @@ class MyGarden {
         const gardenListGroup = document.querySelector('.garden-list .list-group');
 
         gardenListGroup.insertAdjacentHTML('afterbegin', `
-          <a href="${newPlantResponse.link}" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+          <a href="${newPlantResponse.link}" class="garden-list-item list-group-item list-group-item-action py-3 lh-sm" data-id="${newPlantResponse.id}" aria-current="true">
             <div class="d-flex w-100 align-items-center justify-content-between">
               <strong class="mb-1">${plantData.common_name}</strong>
-              <small>Just now</small>
+              <button type="button" class="delete-list-item-btn btn-close p-2 border rounded-circle"></button>
             </div>
             <div class="col-10 mb-1 small">${plantData.description.substring(0, 70)}...</div>
           </a>
         `);
+
+        // get new delete button functionality ready (querySelector is only targeting first item in list)
+        document.querySelector('.garden-list-item').addEventListener('click', e => {
+          if(e.target.classList.contains('delete-list-item-btn')) {
+            e.preventDefault();
+            const thisPlantItem = e.target.closest('.garden-list-item');
+            thisPlantItem.remove();
+          }  
+        });
 
       } else {        
         console.log('Fail, New Plant NOT Added - addPlant()', res);

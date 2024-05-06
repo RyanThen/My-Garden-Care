@@ -39,7 +39,7 @@ while(have_posts()) {
         </div>
         
         <div class="container ps-0 pe-5 py-4" id="icon-grid">
-          <h2 class="pb-2 text-decoration-underline">Plant List:</h2>
+          <!-- <h2 class="pb-2 font-italic">Or browse from list</h2> -->
           <div id="plant-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4 py-5">
             <!-- Plant List Data -->
           </div>
