@@ -19,9 +19,9 @@ function my_garden_custom_post_types() {
     'menu_position' => 20, 
     'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
     'show_in_rest'  => true,
-    // allow subscribers to create garden items from front end.  This removes 'my-garden' CPT from Admins until explicitly grant permissions (below)
-    // 'capability_type' => 'garden',
-    // 'map_meta_cap' => true
+    // allow subscribers to create garden items from front end.
+    'capability_type' => 'garden',
+    'map_meta_cap' => true
   ));
 
 
@@ -42,6 +42,8 @@ function my_garden_custom_post_types() {
     'menu_position' => 30, 
     'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
     'show_in_rest'  => true,
+    'capability_type' => 'care-notes',
+    'map_meta_cap' => true
   ));
 
 }

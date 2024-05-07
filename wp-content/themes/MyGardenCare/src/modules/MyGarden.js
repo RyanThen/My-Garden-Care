@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { apiKeyPerenual } from './api.js';
 import PlantModal from './PlantModal.js';
-import MyGardenList from './MyGardenList.js';
 
 class MyGarden {
 
@@ -13,7 +12,7 @@ class MyGarden {
       axios.defaults.headers.common["X-WP-Nonce"] = mgcThemeData.nonce;
 
       // inject html with relevant data
-      // this.getPlantList();
+      this.getPlantList();
 
       // instantiate modal markup and functionality (imported from PlantModal.js)
       this.plantModal = new PlantModal;
@@ -170,7 +169,7 @@ class MyGarden {
       const newPlant = {
         "title": plantData.common_name,
         "content": plantData.description,
-        "status": "publish"
+        "status": "private"
       }
 
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/`, newPlant);

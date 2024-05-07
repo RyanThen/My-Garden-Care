@@ -18,7 +18,7 @@ while(have_posts()) {
     <div class="p-5 mb-4 bg-body-tertiary rounded-3 border">
       <div class="container-fluid d-flex justify-content-between py-5">
         <div class="hero-content-container">
-          <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
+          <h1 class="display-5 fw-bold"><?php echo str_replace('Private: ', '', esc_attr(get_the_title())); ?></h1>
           <h3 class="plant-hero-common-name col-md-8 fs-4 my-3">Common Names: </h3>
           <div class="plant-hero-content py-2">
             <?php the_content(); ?>
@@ -62,7 +62,7 @@ while(have_posts()) {
               $careNotes = new WP_Query(array(
                 'post_type' => 'care-note',
                 'posts_per_page' => -1,
-                // 'author' => get_current_user_id()
+                'author' => get_current_user_id()
               ));
 
               while($careNotes->have_posts()) {

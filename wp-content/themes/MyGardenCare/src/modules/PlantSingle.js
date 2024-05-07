@@ -22,7 +22,7 @@ class PlantSingle {
   }
 
   events() {
-    // this.populatePlantInfo();
+    this.populatePlantInfo();
 
     // QR button
     this.qrBtn.addEventListener('click', this.getQrCode.bind(this));
@@ -126,7 +126,7 @@ class PlantSingle {
         "title": noteTitleField.value,
         "content": noteBodyField.value,
         "plant_id": plantID,
-        "status": "publish"
+        "status": "private"
       }
   
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/mgc/v1/manageNote/`, newNoteData);
