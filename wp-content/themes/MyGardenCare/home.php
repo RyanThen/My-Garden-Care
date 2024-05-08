@@ -21,37 +21,20 @@
   while($featuredPosts->have_posts()) {
     $featuredPosts->the_post(); ?>
 
-      <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <div class="col-lg-6 px-0">
-          <h1 class="display-4 fst-italic"><?php the_title(); ?></h1>
-          <p class="lead my-3"><?php echo wp_trim_words(get_the_content(), 30); ?></p>
-          <p class="lead mb-0"><a href="<?php echo get_the_permalink(); ?>" class="text-body-emphasis fw-bold">Continue reading...</a></p>
+      <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary" style="background: url(<?php echo get_the_post_thumbnail_url( get_the_ID() ); ?>); background-size: cover;">
+        <div class="col-lg-7 p-4 rounded-5 featured-img-txt-overlay">
+          <h1 class="display-4 fst-italic text-white"><?php the_title(); ?></h1>
+          <p class="lead my-3 text-white"><?php echo wp_trim_words(get_the_content(), 30); ?></p>
+          <p class="lead mb-0 text-white"><a href="<?php echo get_the_permalink(); ?>" class="fw-bold text-white">Continue reading...</a></p>
         </div>
       </div>
 
   <?php } 
   
-  wp_reset_postdata(); 
-   
-  // // query for latest posts that are not the featured blog post
-  // $latestPosts = new WP_Query(array(
-  //   'post_type' => 'post',
-  //   'posts_per_page' => 2,
-  //   'paged'          => get_query_var('paged', 1),
-  //   'meta_key' => 'featured_blog_post',
-  //   'meta_query'     => array(
-  //     array(
-  //       'key'     => 'featured_blog_post',
-  //       'compare' => 'NOT LIKE',
-  //       'value'   => 'Yes',
-  //     )
-  //   ),
-  // )); ?>
+  wp_reset_postdata(); ?>
 
 
-  <h3 class="pt-3 pb-2 mb-4 fst-italic">All Posts</h3>
-
-  <div class="row g-5 mb-2">
+  <div class="row g-5 pt-3 mb-3">
 
     <div class="col-md-8">
 
@@ -67,7 +50,7 @@
           <?php // check if post index in loop is even
           if($blogCount % 2 == 0) { ?>
             <div class="col-auto d-none d-lg-block">
-              <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+              <img src="<?php echo get_the_post_thumbnail_url( get_the_ID(), 'medium' ); ?>" width="200" height="250" aria-label="Blog Thumbnail" >
             </div>
           <?php } ?>
 
@@ -94,7 +77,7 @@
           <?php // check if post index in loop is odd
           if($blogCount % 2 == 1) { ?>
             <div class="col-auto d-none d-lg-block">
-              <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+              <img src="<?php echo get_the_post_thumbnail_url( get_the_ID(), 'medium' ); ?>" width="200" height="250" aria-label="Blog Thumbnail" preserveAspectRatio="xMidYMid slice">
             </div>
           <?php } ?>
           
@@ -135,7 +118,7 @@
               $catQuery->the_post(); ?>
               <li>
                 <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#">
-                  <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
+                <img src="<?php echo get_the_post_thumbnail_url( get_the_ID(), 'medium' ); ?>" width="115" height="115" aria-label="Blog Thumbnail" >
                   <div class="col-lg-8">
                     <h6 class="mb-0"><?php the_title(); ?></h6>
                     <small class="text-body-secondary"><?php the_date(); ?></small>

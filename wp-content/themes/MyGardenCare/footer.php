@@ -11,6 +11,7 @@
           <?php if (is_user_logged_in()) {  // must be logged in to access My Garden ?>
             <li><a href="<?php echo esc_url(site_url('/my-garden')); ?>" class="nav-link px-2 text-black">My Garden</a></li>
           <?php } ?>
+          <li><a href="<?php echo esc_url(site_url('/learning-center')); ?>" class="nav-link px-2 text-black">Learning Center</a></li>
           <li><a href="#" class="nav-link px-2 text-black">About</a></li>
           <li <?php if(get_post_type() == 'post') echo 'class="current-menu-item"' ?>><a href="<?php echo esc_url(site_url('/blog')); ?>" class="nav-link px-2 text-black">Blog</a></li>
         </ul>

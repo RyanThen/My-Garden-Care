@@ -13,7 +13,7 @@ while(have_posts()) {
   the_post(); ?>
 
 <!-- Jumbotron -->
-  <div class="single-my-garden page-container container py-4" data-plantid="<?php echo get_the_ID(); ?>">
+  <div class="single-my-garden page-container container py-4" data-plantid="<?php print(get_field('is_custom_plant')) ? "100" . get_the_ID() : get_the_ID(); ?>">
 
     <div class="p-5 mb-4 bg-body-tertiary rounded-3 border">
       <div class="container-fluid d-flex justify-content-between py-5">
@@ -38,49 +38,48 @@ while(have_posts()) {
 
       <div class="plant-body d-flex flex-column align-items-stretch">
         <div class="plant-info-container generic-content p-5 mb-4 rounded-3">
+          <?php if(get_field('plant_details')) echo get_field('plant_details'); ?>
           <!-- Plant Info -->
         </div>
 
         <div class="notes-wrap">
 
+          <h2 class="headline pt-5 pb-3 border-top">Saved notes</h2>
+
+          <ul id="care-notes-list" class="care-notes-list note-list">
+            <?php 
+            $careNotes = new WP_Query(array(
+              'post_type' => 'care-note',
+              'posts_per_page' => -1,
+              'author' => get_current_user_id()
+            ));
+
+            while($careNotes->have_posts()) {
+              $careNotes->the_post(); 
+              
+              if ($currentPageID == get_field('plant_id')) { ?>
+
+                <li class="note" data-id="<?php echo get_the_ID(); ?>">
+                  <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. ?>">
+                  <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+                  <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+                  <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content())); // wp_strip_all_tags() removes html tags and comments which are stored in the database along with content ?></textarea>
+                  <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+                </li>
+
+              <?php 
+              }
+            } ?>
+          </ul>
+
           <h2 class="headline pt-5 pb-3 border-top">Create a new note</h2>
 
           <ul class="create-care-note note-list border">
-
             <li class="note" data-id="<?php echo get_the_ID(); ?>">
               <input class="note-title-field" value="" placeholder="Note Title...">
               <textarea class="note-body-field" placeholder="Note Content..."></textarea>
               <span class="create-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Create Note</span>
             </li>
-
-          </ul>
-
-          <h2 class="headline pt-5 pb-3 border-top">Saved notes</h2>
-
-          <ul id="care-notes-list" class="care-notes-list note-list">
-            <?php 
-              $careNotes = new WP_Query(array(
-                'post_type' => 'care-note',
-                'posts_per_page' => -1,
-                'author' => get_current_user_id()
-              ));
-
-              while($careNotes->have_posts()) {
-                $careNotes->the_post(); 
-                
-                if ($currentPageID == get_field('plant_id')) { ?>
-
-                  <li class="note" data-id="<?php echo get_the_ID(); ?>">
-                    <input readonly class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); // str_replace() three parameters: what string do you want to replace, what to replace it with, from which text are you searching through. ?>">
-                    <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-                    <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-                    <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content())); // wp_strip_all_tags() removes html tags and comments which are stored in the database along with content ?></textarea>
-                    <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
-                  </li>
-
-                <?php 
-                }
-              } ?>
           </ul>
 
         </div> <!-- .notes-wrap -->

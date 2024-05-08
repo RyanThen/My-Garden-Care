@@ -10,7 +10,8 @@
   <div class="custom-plant-container d-flex p-3 bg-white border-bottom d-none">
     <div class="custom-plant-fields-container note pb-2">
       <input class="custom-plant-title-field note-title-field w-100" value="" placeholder="Plant Name...">
-      <textarea class="custom-plant-body-field note-body-field" placeholder="Plant Details..."></textarea>
+      <textarea class="custom-plant-body-field note-body-field" placeholder="Plant Description..."></textarea>
+      <textarea class="custom-plant-body-field note-body-field" placeholder="Care Details..."></textarea>
       <span class="add-custom-plant-btn btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Add Plant</span>
     </div>
   </div>

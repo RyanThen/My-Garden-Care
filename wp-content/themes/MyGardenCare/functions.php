@@ -2,6 +2,16 @@
 
 require get_theme_file_path('/inc/care-notes-route.php');
 
+// // Register custom REST API fields
+// add_action('rest_api_init', 'mgc_rest_api');
+
+// function mgc_rest_api() {
+//   register_rest_field('my-garden', 'plantCareDetails', array(
+//     'get_callback' => function() { return 'TEsting 1234'; }
+//   ));
+// } 
+
+
 add_action('wp_enqueue_scripts', 'mgc_theme_files');
 
 function mgc_theme_files() {
@@ -33,7 +43,6 @@ add_action('pre_get_posts', 'chewy_query_adjustments');
 function chewy_query_adjustments($query) {
   // filter out featured blog post so it doesn't display twice
   if (!is_admin() && is_home() && $query->is_main_query()) {
-    $query->set('posts_per_page', 5);
     $query->set('meta_query', array(
       array(
         'key'     => 'featured_blog_post',
@@ -42,6 +51,13 @@ function chewy_query_adjustments($query) {
       )
     ));
   }
+
+  // include custom post types in search results
+  if ($query->is_search) {
+    $query->set('post_type', array('post', 'page', 'my-garden'));
+  }
+
+  return $query;
 }
 
 

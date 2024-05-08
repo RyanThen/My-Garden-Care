@@ -50,7 +50,11 @@ class PlantSingle {
 
       if(plantData) {
         document.querySelector('.plant-hero-img').setAttribute('src', plantData.default_image.medium_url);
-        document.querySelector('.plant-hero-common-name').insertAdjacentHTML('beforeend', plantData.common_name);
+        if(plantData.common_name) { 
+          document.querySelector('.plant-hero-common-name').insertAdjacentHTML('beforeend', plantData.common_name);
+        } else { 
+          document.querySelector('.plant-hero-common-name').remove();
+        };
         document.querySelector('.plant-info-container').insertAdjacentHTML('beforeend', `
 
           ${careGuideData.map(careItem => `

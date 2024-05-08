@@ -21,15 +21,12 @@
             <?php if (is_user_logged_in()) {  // must be logged in to access My Garden ?>
               <li><a href="<?php echo esc_url(site_url('/my-garden')); ?>" class="nav-link px-2 text-black">My Garden</a></li>
             <?php } ?>
-            <li><a href="#" class="nav-link px-2 text-black">Pricing</a></li>
-            <li><a href="#" class="nav-link px-2 text-black">FAQs</a></li>
-            <li><a href="#" class="nav-link px-2 text-black">About</a></li>
+            <li><a href="<?php echo esc_url(site_url('/learning-center')); ?>" class="nav-link px-2 text-black">Learning Center</a></li>
+            <li><a href="<?php echo esc_url(site_url('/about')); ?>" class="nav-link px-2 text-black">About</a></li>
             <li <?php if(get_post_type() == 'post') echo 'class="current-menu-item"' ?>><a href="<?php echo esc_url(site_url('/blog')); ?>" class="nav-link px-2 text-black">Blog</a></li>
           </ul>
 
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" class="form-control form-control-white text-bg-white" placeholder="Search..." aria-label="Search">
-          </form>
+          <?php get_search_form(); ?>
 
           <div class="text-end">
 

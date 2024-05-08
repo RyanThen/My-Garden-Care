@@ -1,3 +1,22 @@
+.hero-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 275px;
+}
+
+@media(max-width: 850px) {
+  .hero-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+.hero-img {
+  max-width: 300px;
+}
+
+
 .list-block {
   flex: 1;
 }
@@ -46,6 +65,10 @@ i.list-leaf {
   text-align: center;
 }
 
+.featured-img-txt-overlay { 
+  background-color: rgba(0, 0, 0, .47);
+}
+
 
 .plant-hero-common-name {
   width: 100%;
@@ -84,6 +107,15 @@ i.list-leaf {
   width: 380px;
   margin-left: auto;
   border: 1px solid #ededed;
+}
+
+.garden-list .note-title-field {
+  font-size: 2.1rem;
+}
+
+.garden-list .note-body-field {
+  height: 150px;
+  font-size: 1.1rem;
 }
 
 .garden-list .delete-list-item-btn {
@@ -247,19 +279,6 @@ i.list-leaf {
   font-size: 1.15rem;
   line-height: 1.65;
 }
-
-/* .btn {
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 4px;
-  overflow: hidden;
-  text-decoration: none;
-  color: #fff;
-  font-size: 1.19rem;
-  padding: 12px 24px;
-  border: none;
-  outline: none;
-} */
 
 .btn--small {
   font-size: 0.88rem;

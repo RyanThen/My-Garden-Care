@@ -5,7 +5,8 @@ class MyGardenList {
     if(document.querySelector('.garden-list')) {
       this.addCustomPlantContainer = document.querySelector('.garden-list .custom-plant-container')
       this.customPlantTitleField = document.querySelector('.garden-list .custom-plant-title-field');
-      this.customPlantBodyField = document.querySelector('.garden-list .custom-plant-body-field');
+      this.customPlantBodyField1 = document.querySelector('.garden-list .custom-plant-body-field:first-of-type');
+      this.customPlantBodyField2 = document.querySelector('.garden-list .custom-plant-body-field:last-of-type');
 
       this.addCustomPlantBtn = document.querySelector('.garden-list .add-custom-plant-btn');
       this.newPlantBtn = document.querySelector('.garden-list .new-plant-btn');
@@ -56,7 +57,8 @@ class MyGardenList {
     if(!this.addCustomPlantContainer.classList.contains('d-none')) {
       this.newPlantBtn.innerHTML = 'Cancel';
       this.customPlantTitleField.value = '';
-      this.customPlantBodyField.value = '';
+      this.customPlantBodyField1.value = '';
+      this.customPlantBodyField2.value = '';
     } else {
       this.newPlantBtn.innerHTML = 'Add New Plant';
     }
@@ -64,13 +66,14 @@ class MyGardenList {
 
   async addCustomPlant() {
     try {
-      const newCustomPlantTitleField = document.querySelector('.custom-plant-title-field');
-      const newCustomPlantBodyField = document.querySelector('.custom-plant-body-field');
-
       const newCustomPlant = {
-        "title": newCustomPlantTitleField.value,
-        "content": newCustomPlantBodyField.value,
-        "status": "publish"
+        "title": this.customPlantTitleField.value,
+        "content": this.customPlantBodyField1.value,
+        "acf": { 
+          "plant_details": this.customPlantBodyField2.value,
+          "is_custom_plant": true
+        },
+        "status": "private"
       }
 
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/`, newCustomPlant);
