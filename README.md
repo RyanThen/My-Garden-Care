@@ -9,9 +9,9 @@ This custom WordPress theme features CRUD operations using the WordPress REST AP
 **WordPress Scripts**: Utilized for enhanced WordPress backend capabilities.
 
 ### APIs Used
-**Ticketmaster API**: Integrated for event information. [Documentation]([url](https://developer.ticketmaster.com/products-and-docs/apis/getting-started/))</br>
-**Plant API**: Implemented for plant data and information retrieval. [Documentation]([url](https://perenual.com/docs/api))</br>
-**QR Code API**: Utilized for QR code generation and printing. [Documentation]([url](https://goqr.me/api/))
+**Ticketmaster API**: Integrated for event information. <a href="https://developer.ticketmaster.com/products-and-docs/apis/getting-started/" target="_blank">Documentation</a></br>
+**Plant API**: Implemented for plant data and information retrieval. <a href="https://perenual.com/docs/api" target="_blank">Documentation</a></br>
+**QR Code API**: Utilized for QR code generation and printing. <a href="https://goqr.me/api/" target="_blank">Documentation</a>
 
 ### Key Features
 **CRUD Functionality**: Full CRUD operations using REST API endpoints.</br>
@@ -25,5 +25,5 @@ This custom WordPress theme features CRUD operations using the WordPress REST AP
 **Fully Functioning Blog**: Includes archives and a user-controlled featured post hero section.</br>
 
 ### Plugins Used
-[Advanced Custom Fields]([url](https://www.advancedcustomfields.com/))</br>
-[Members]([url](https://members-plugin.com/))
+<a href="https://www.advancedcustomfields.com/" target="_blank">Advanced Custom Fields</a></br>
+<a href="https://members-plugin.com/" target="_blank">Members</a>
