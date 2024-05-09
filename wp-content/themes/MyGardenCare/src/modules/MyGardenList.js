@@ -2,63 +2,73 @@ import axios from 'axios';
 
 class MyGardenList {
   constructor() {
-    if(document.querySelector('.garden-list')) {
-      this.addCustomPlantContainer = document.querySelector('.garden-list .custom-plant-container')
-      this.customPlantTitleField = document.querySelector('.garden-list .custom-plant-title-field');
-      this.customPlantBodyField1 = document.querySelector('.garden-list .custom-plant-body-field:first-of-type');
-      this.customPlantBodyField2 = document.querySelector('.garden-list .custom-plant-body-field:last-of-type');
+    // Select the garden list container
+    this.gardenList = document.querySelector('.garden-list');
 
-      this.addCustomPlantBtn = document.querySelector('.garden-list .add-custom-plant-btn');
-      this.newPlantBtn = document.querySelector('.garden-list .new-plant-btn');
-      this.deletePlantBtns = document.querySelectorAll('.delete-list-item-btn');
+    if (this.gardenList) {
+      this.addCustomPlantContainer = this.gardenList.querySelector('.custom-plant-container');
+      this.customPlantTitleField = this.gardenList.querySelector('.custom-plant-title-field');
+      this.customPlantBodyFields = this.gardenList.querySelectorAll('.custom-plant-body-field');
+      this.addCustomPlantBtn = this.gardenList.querySelector('.add-custom-plant-btn');
+      this.newPlantBtn = this.gardenList.querySelector('.new-plant-btn');
+      this.gardenListGroup = this.gardenList.querySelector('.list-group');
 
-      this.gardenListItems = document.querySelectorAll('.garden-list-item');
-
-      this.events();
+      this.setupEventListeners();
     }
   }
 
-  events() {
-    // add custom plant to list
-    this.addCustomPlantBtn.addEventListener('click', this.addCustomPlant.bind(this));
-    this.newPlantBtn.addEventListener('click', this.openCustomPlantFields.bind(this));
+  setupEventListeners() {
+    if (this.addCustomPlantBtn) {
+      this.addCustomPlantBtn.addEventListener('click', () => this.addCustomPlant());
+    }
 
-    // prevent default <a> anchor tag behavior if delete button is clicked
-    this.gardenListItems.forEach(gardenListItem => {
-      gardenListItem.addEventListener('click', e => this.deleteBtnPrevDefault(e));
-    });
+    if (this.newPlantBtn) {
+      this.newPlantBtn.addEventListener('click', () => this.openCustomPlantFields());
+    }
 
-    // delete plant from list
-    this.deletePlantBtns.forEach(deleteBtn => {
-      deleteBtn.addEventListener('click', e => this.deletePlant(e));
-    });
-  }
-
-  deleteBtnPrevDefault(e) {
-    if(e.target.classList.contains('delete-list-item-btn')) {
-      e.preventDefault();
+    if (this.gardenListGroup) {
+      this.gardenListGroup.addEventListener('click', (event) => this.handleListItemClick(event));
     }
   }
 
-  async deletePlant(e) {
-    const thisPlantItem = e.target.closest('.garden-list-item');
-    const thisPlantItemID = thisPlantItem.dataset.id;
+  handleListItemClick(event) {
+    const deleteBtn = event.target.closest('.delete-list-item-btn');
+    if (deleteBtn) {
+      event.preventDefault();
+      const plantItem = deleteBtn.closest('.garden-list-item');
+      if (plantItem) {
+        this.deletePlant(plantItem);
+      }
+    }
+  }
 
-    const res = await axios.delete(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/${thisPlantItemID}`);
+  async deletePlant(plantItem) {
+    try {
+      const plantItemId = plantItem.dataset.id;
+      if (!plantItemId) {
+        console.error('Failed to delete plant: Plant item ID not found.');
+        return;
+      }
 
-    if(res.status === 200) {
-      thisPlantItem.remove();
+      const res = await axios.delete(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/${plantItemId}`);
+
+      if (res.status === 200) {
+        plantItem.remove();
+        console.log('Plant deleted successfully.');
+      } else {
+        console.error('Failed to delete plant:', res);
+      }
+    } catch (error) {
+      console.error('Error deleting plant:', error);
     }
   }
 
   openCustomPlantFields() {
     this.addCustomPlantContainer.classList.toggle('d-none');
-
-    if(!this.addCustomPlantContainer.classList.contains('d-none')) {
+    if (!this.addCustomPlantContainer.classList.contains('d-none')) {
       this.newPlantBtn.innerHTML = 'Cancel';
       this.customPlantTitleField.value = '';
-      this.customPlantBodyField1.value = '';
-      this.customPlantBodyField2.value = '';
+      this.customPlantBodyFields.forEach(field => (field.value = ''));
     } else {
       this.newPlantBtn.innerHTML = 'Add New Plant';
     }
@@ -67,59 +77,49 @@ class MyGardenList {
   async addCustomPlant() {
     try {
       const newCustomPlant = {
-        "title": this.customPlantTitleField.value,
-        "content": this.customPlantBodyField1.value,
-        "acf": { 
-          "plant_details": this.customPlantBodyField2.value,
-          "is_custom_plant": true
+        title: this.customPlantTitleField.value,
+        content: this.customPlantBodyFields[0].value, // Assuming first textarea is for content
+        acf: {
+          plant_details: this.customPlantBodyFields[1].value, // Assuming second textarea is for plant details
+          is_custom_plant: true
         },
-        "status": "private"
-      }
+        status: 'private'
+      };
 
       const res = await axios.post(`${mgcThemeData.root_url}/wp-json/wp/v2/my-garden/`, newCustomPlant);
-      const newCustomPlantData = res.data;
+      const newPlantData = res.data;
 
-      console.log('new plant response:', newCustomPlantData);
-
-      if (newCustomPlantData) {
-
-        const gardenListGroup = document.querySelector('.garden-list .list-group');
-
-        gardenListGroup.insertAdjacentHTML('afterbegin', `
-          <a href="${newCustomPlantData.link}" class="garden-list-item list-group-item list-group-item-action py-3 lh-sm" data-id="${newCustomPlantData.id}" aria-current="true">
-            <div class="d-flex w-100 align-items-center justify-content-between">
-              <strong class="mb-1">${newCustomPlantData.title.raw}</strong>
-              <button type="button" class="delete-list-item-btn btn-close p-2 border rounded-circle"></button>
-            </div>
-            <div class="col-10 mb-1 small">${newCustomPlantData.content.raw.substring(0, 70)}...</div>
-          </a>
-        `);
-
-        // get new delete button functionality ready (querySelector is only targeting first item in list)
-        document.querySelector('.garden-list-item').addEventListener('click', e => {
-          if(e.target.classList.contains('delete-list-item-btn')) {
-            this.deleteBtnPrevDefault(e);
-            this.deletePlant(e);
-          }  
-        });
-
-        // close new plant fields
-        this.addCustomPlantContainer.classList.add('d-none');
-
-        // change button text back
-        this.newPlantBtn.innerHTML = 'Add New Plant';
-
-        console.log('Success, New Plant Added - addCustomPlant()', res);
-
-      } else {        
-        console.log('Fail, New Plant NOT Added - addCustomPlant()', res);
+      if (newPlantData) {
+        this.insertNewPlantItem(newPlantData);
+        this.resetCustomPlantFields();
+        console.log('New plant added successfully:', newPlantData);
+      } else {
+        console.error('Failed to add new plant: Invalid response data.');
       }
-
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error('Error adding new plant:', error);
     }
   }
 
+  insertNewPlantItem(plantData) {
+    const newItemHTML = `
+      <a href="${plantData.link}" class="garden-list-item list-group-item list-group-item-action py-3 lh-sm" data-id="${plantData.id}" aria-current="true">
+        <div class="d-flex w-100 align-items-center justify-content-between">
+          <strong class="mb-1">${plantData.title.rendered}</strong>
+          <button type="button" class="delete-list-item-btn btn-close p-2 border rounded-circle"></button>
+        </div>
+        <div class="col-10 mb-1 small">${plantData.content.rendered.substring(0, 70)}...</div>
+      </a>
+    `;
+    this.gardenListGroup.insertAdjacentHTML('afterbegin', newItemHTML);
+  }
+
+  resetCustomPlantFields() {
+    this.customPlantTitleField.value = '';
+    this.customPlantBodyFields.forEach(field => (field.value = ''));
+    this.addCustomPlantContainer.classList.add('d-none');
+    this.newPlantBtn.innerHTML = 'Add New Plant';
+  }
 }
 
 export default MyGardenList;
